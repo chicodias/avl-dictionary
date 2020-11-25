@@ -13,47 +13,25 @@
 #define FILHO_ESQ 0 
 #define FILHO_DIR 1
 
-
-typedef         /*Tipo ITEM da ABB*/
-struct item_ 
-{
-    int chave;
-    char nome[20];
-}
-ITEM;
-
-typedef struct node_ NO;
-
-         /* NÓ da ABB */
-struct node_
-{
-     ITEM item;
-     NO * esq;
-     NO * dir;
-};
-
-typedef         /*  endereço da raiz e altura */
-struct arv_
-{
-    NO * raiz;
-} ARV;
+typedef struct avl AVL;
+typedef char * ITEM;
 
 /* Funções deste TAD */
 
-ARV * abb_criar (void); /*Criacao da ABB e retorno do seu ponteiro*/
+AVL * avl_criar (void); /*Criacao da ABB e retorno do seu ponteiro*/
 
-void abb_apagar (ARV **T); /*Apaga todo o conteudo da lista e libera o bloco de memoria*/
+void avl_apagar (AVL **T); /*Apaga todo o conteudo da lista e libera o bloco de memoria*/
 
-bool abb_inserir (ARV *T, ITEM item); /*Insere o ITEM na ABB*/
+bool avl_inserir (AVL *T, ITEM item); /*Insere o ITEM na ABB*/
 
-bool abb_remover (ARV *T, int chave); /* REMOVE um item da arvore */
+bool avl_remover (AVL *T, int chave); /* REMOVE um item da arvore */
 
-ITEM * abb_buscar (ARV *T, int chave); /*Busca a chave na lista e e a retorna. se nao existir, retorna ERRO*/
+ITEM * avl_buscar (AVL *T, int chave); /*Busca a chave na lista e e a retorna. se nao existir, retorna ERRO*/
 
-void abb_imprimir (NO * h); /*Imprime os elementos na arvore ordenadamente*/
+void avl_imprimir (AVL * T); /*Imprime os elementos na arvore ordenadamente*/
 
-int abb_altura (ARV * T); /* retorna a altura de uma arvore */
+int avl_altura (AVL * T); /* retorna a altura de uma arvore */
 
-bool abb_vazia (ARV * T); /* retorna 1 se a arv está vazia, 0 caso contrario, ERRO caso nao tenha sido alocada */
+bool avl_vazia (AVL * T); /* retorna 1 se a arv está vazia, 0 caso contrario, ERRO caso nao tenha sido alocada */
 
-#endif /* ABB_H */
+#endif /* A_H */

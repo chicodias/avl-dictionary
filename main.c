@@ -24,7 +24,7 @@ int main()
         switch (opn)
         {
             case 1:
-
+            // criar dicionario
             // não criar uma lista sem antes apagar uma já existente, perdendo acesso a anterior
                 if (TR == NULL)
                 {
@@ -41,10 +41,12 @@ int main()
                 break;
 
             case 2:
+            // atualizar dicionario
                 abb_apagar (&TR);
                 break;
 
             case 3:
+            // apagar dicionario
                 //printf("Numero de Insercoes:\n");
                 scanf ("%d", &nops);
                 for (i = 0; i < nops; ++i)
@@ -56,6 +58,7 @@ int main()
                 break;
 
             case 4:
+            // verificar texto
                 //printf ("Numero de remocoes:\n");
                 scanf ("%d", &nops);
                 for (i = 0; i < nops; ++i)
@@ -65,32 +68,8 @@ int main()
                 }
                 break;
 
-            case 5:
-                //printf ("Numero de buscas:\n");
-                scanf ("%d", &nops);
-                for (i = 0; i < nops; ++i)
-                {
-                    scanf ("%d", &chave);
-                    p = abb_buscar (TR, chave);
-                    if (p != NULL)
-                        printf ("%s\n", p->nome);
-                    else
-                        printf ("%d\n", ERRO);
-                }
-                break;
-
-            case 6:
-                if(TR != NULL)
-                    abb_imprimir (TR->raiz);
-                else
-                    printf ("%d\n", ERRO);
-                break;
-
-            case 7:
-                printf ("%d\n", abb_altura (TR));
-                break;
-
             case 0:
+            // sair da aplicacao
                 abb_apagar (&TR);
                 return 0;
                 break;

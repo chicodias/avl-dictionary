@@ -6,18 +6,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Cabeçalhos das funções de apoio internas ao TAD: */
-void abb_apagar_nos (NO ** raiz);
-bool abb_inserir_no (NO *raiz, ITEM item);
-NO * abb_inserir_filho (int filho, NO *no, ITEM item);
-NO* abb_buscar_no (NO* raiz, int chave);
-bool abb_remover_no (NO **raiz, int chave);
-int abb_altura_no (NO * T);
+#define max(a, b) ((a > b) ? a : b)
 
+typedef struct no NO;
 
-ARV * abb_criar (void) /*Criacao da ABB e retorno do seu ponteiro*/
+struct no 
+{      
+    ITEM item; 
+    NO * esq; 
+    NO * dir; 
+    int altura;  // altura do nó
+};
+
+struct avl 
 {
-    ARV *r = (ARV *) malloc (sizeof(ARV));
+     NO *raiz;      
+};
+
+
+
+
+/* Cabeçalhos das funções de apoio internas ao TAD: */
+void avl_apagar_nos (NO ** raiz);
+bool avl_inserir_no (NO *raiz, ITEM item);
+NO * avl_inserir_filho (int filho, NO *no, ITEM item);
+NO* avl_buscar_no (NO* raiz, int chave);
+bool avl_remover_no (NO **raiz, int chave);
+int avl_altura_no (NO * T);
+
+
+AVL * avl_criar (void) /*Criacao da AVL e retorno do seu ponteiro*/
+{
+    AVL *r = (AVL *) malloc (sizeof(AVL));
     r->raiz = NULL;
 
     if (r == NULL)
@@ -26,34 +46,34 @@ ARV * abb_criar (void) /*Criacao da ABB e retorno do seu ponteiro*/
     return r;
 }
 
-void abb_apagar (ARV **T) /*Apaga todo o conteudo da ARV e libera o bloco de memoria*/
+void avl_apagar (AVL **T) /*Apaga todo o conteudo da AVL e libera o bloco de memoria*/
 {
     if (*T != NULL)
     {
-        abb_apagar_nos(&(*T)->raiz);
+        avl_apagar_nos(&(*T)->raiz);
         free (*T);
         *T = NULL;
     }
 }
 
-void abb_apagar_nos (NO ** raiz) /* função interna ao TAD */
+void avl_apagar_nos (NO ** raiz) /* função interna ao TAD */
 {
     if (*raiz != NULL) 
     {           
-        abb_apagar_nos(&(*raiz)->esq); 
-        abb_apagar_nos(&(*raiz)->dir); 
+        avl_apagar_nos(&(*raiz)->esq); 
+        avl_apagar_nos(&(*raiz)->dir); 
         free(*raiz);      
         *raiz = NULL;    
     }
 }
 
-/* insere um item na arvore, retorna 1 se conseguir ou 0 caso contrario. */
-bool abb_inserir (ARV *T, ITEM item)
+/* insere um item na AVLore, retorna 1 se conseguir ou 0 caso contrario. */
+bool avl_inserir (AVL *T, ITEM item)
 { 
     if (T == NULL)
         return (ERRO);
     
-    if (abb_vazia (T))
+    if (avl_vazia (T))
     { 
         T->raiz = (NO *) malloc (sizeof(NO)); 
         if (T->raiz != NULL)
@@ -65,31 +85,31 @@ bool abb_inserir (ARV *T, ITEM item)
         }    
     }  
    // nao inserir um elemento repetido na arvore
-    if (abb_buscar(T, item.chave) == NULL)
-        return (abb_inserir_no (T->raiz, item));
+    if (avl_buscar(T, item.chave) == NULL)
+        return (avl_inserir_no (T->raiz, item));
 
     // elemento ja estava na arvore
     return ERRO;    
 }
 
 // função de apoio - interna no .c do TAD 
-bool abb_inserir_no (NO *raiz, ITEM item) 
+bool avl_inserir_no (NO *raiz, ITEM item) 
 { 
     if (item.chave < raiz->item.chave) 
     {   
         if (raiz->esq != NULL) 
-            return (abb_inserir_no(raiz->esq, item));
+            return (avl_inserir_no(raiz->esq, item));
         else
-            return (abb_inserir_filho(FILHO_ESQ, raiz, item)!=NULL);
+            return (avl_inserir_filho(FILHO_ESQ, raiz, item)!=NULL);
     } 
     else
     { 
         if (item.chave > raiz->item.chave) 
         { 
             if(raiz->dir != NULL) 
-                return abb_inserir_no(raiz->dir, item); 
+                return avl_inserir_no(raiz->dir, item); 
             else
-                return (abb_inserir_filho(FILHO_DIR, raiz, item)!=NULL);      
+                return (avl_inserir_filho(FILHO_DIR, raiz, item)!=NULL);      
         } 
         else
             return (FALSE);     
@@ -97,7 +117,7 @@ bool abb_inserir_no (NO *raiz, ITEM item)
 }
 
 // função de apoio – interna ao .c do TAD
-NO *abb_inserir_filho (int filho, NO *no, ITEM item) 
+NO *avl_inserir_filho (int filho, NO *no, ITEM item) 
 {     
     NO * pnovo = (NO *) malloc (sizeof (NO)); 
     
@@ -116,23 +136,23 @@ NO *abb_inserir_filho (int filho, NO *no, ITEM item)
 }
 
 /* busca uma chave na árvore e retorna o respectivo item */
-ITEM * abb_buscar (ARV *T, int chave)
+ITEM * avl_buscar (AVL *T, int chave)
 { 
     if(T == NULL) 
         return NULL; 
     
-    if (abb_vazia(T))  
+    if (avl_vazia(T))  
         return NULL; 
     
     else 
     {    
-        NO* no = abb_buscar_no (T->raiz, chave); 
+        NO* no = avl_buscar_no (T->raiz, chave); 
         return (&(no->item));        
     } 
 } 
 
 /* funcao auxiliar ao TAD */
-NO* abb_buscar_no (NO* raiz, int chave) 
+NO* avl_buscar_no (NO* raiz, int chave) 
 { 
     if(raiz == NULL)
         return NULL;     
@@ -142,22 +162,22 @@ NO* abb_buscar_no (NO* raiz, int chave)
             return (raiz);      
         else 
             if (chave < raiz->item.chave) 
-                return (abb_buscar_no(raiz->esq, chave));        
+                return (avl_buscar_no(raiz->esq, chave));        
             else 
-                return (abb_buscar_no(raiz->dir, chave));
+                return (avl_buscar_no(raiz->dir, chave));
 }
 
 /* REMOVE um elemento da árvore. retorna TRUE se conseguir ou FALSE caso contrario */
-bool abb_remover (ARV *T, int chave)
+bool avl_remover (AVL *T, int chave)
 {    
     if (T != NULL)
-        return (abb_remover_no (&T->raiz, chave)); 
+        return (avl_remover_no (&T->raiz, chave)); 
     
     return(FALSE);
 }
 
  // função interna no .c 
-bool abb_remover_no (NO **raiz, int chave)
+bool avl_remover_no (NO **raiz, int chave)
 {
     if ((*raiz) == NULL) 
         return (FALSE); // chave não existe
@@ -196,48 +216,89 @@ bool abb_remover_no (NO **raiz, int chave)
         }      
     }
     else if ((*raiz)->item.chave > chave) 
-        abb_remover_no (&(*raiz)->esq, chave); 
+        avl_remover_no (&(*raiz)->esq, chave); 
     else
-        abb_remover_no (&(*raiz)->dir, chave); 
+        avl_remover_no (&(*raiz)->dir, chave); 
     
     return (TRUE);     
 }
 
 /* retorna a altura de uma árvore */
-int abb_altura (ARV * T)
+int avl_altura (AVL * T)
 {
     if (T == NULL)
         return ERRO;
-    return (abb_altura_no(T->raiz));
+    return (avl_altura_no(T->raiz));
 }
 
 /* Função auxiliar ao TAD */
-int abb_altura_no (NO * T)
+int avl_altura_no (NO * T)
 {
     if (T == NULL) 
       return -1; // altura da árvore vazia
    else {
-      int he = abb_altura_no (T->esq);
-      int hd = abb_altura_no (T->dir);
+      int he = avl_altura_no (T->esq);
+      int hd = avl_altura_no (T->dir);
       if (he < hd) return hd + 1;
       else return he + 1;
    }
 }
+void avl_imprimir (AVL * T){
+    avl_imprimir_no (T->raiz);
+}
 
 /* Imprime a árvore em ordem */
-void abb_imprimir (NO * r)
+void avl_imprimir_no (NO * r)
 {
     if (r == NULL) return;
     
-    abb_imprimir(r->esq);
-    printf("%d %s\n", r->item.chave, r->item.nome); 
-    abb_imprimir(r->dir);
+    avl_imprimir(r->esq);
+    printf("%s\n",r->item); 
+    avl_imprimir(r->dir);
 }
 
-/*  VERIFICA SE A ABB É VAZIA */
-bool abb_vazia (ARV * T)
+/*  VERIFICA SE A avl É VAZIA */
+bool avl_vazia (AVL * T)
 {
     if (T == NULL)
         return ERRO;
     return (T->raiz == NULL);
 }
+
+
+NO * rodar_direita(NO *a) 
+{   
+    NO *b = a->esq;   
+    a->esq = b->dir;   
+    b->dir = a; // atualizar alturas de A e B  
+    
+    a->altura = max(avl_altura_no(a->esq), avl_altura_no(a->dir)) + 1;
+    b->altura = max(avl_altura_no(b->esq), a->altura) + 1;
+    
+    return b;
+}
+
+NO * rodar_esquerda(NO *a) 
+{    
+    NO *b = a->dir;    
+    a->dir = b->esq;
+    b->esq = a;
+    // atualizar alturas de A e B   
+    a->altura = max(avl_altura_no(a->esq), avl_altura_no(a->dir)) + 1;
+    b->altura = max(avl_altura_no(b->dir),a->altura) + 1;
+    return b;
+}
+
+
+NO *rodar_esquerda_direita(NO *a)   
+{
+    a->esq = rodar_esquerda(a->esq);
+    return rodar_direita(a);  
+}
+
+NO *rodar_direita_esquerda(NO *a)   
+{    
+    a->dir = rodar_direita(a->dir); 
+    return rodar_esquerda(a);  
+}
+
