@@ -12,7 +12,7 @@ int main()
         nops = numero de operaçoes requisitadas
         chave: chave a ser buscada 
         mov: filme retornado pela busca  */
-    int opn, nops, chave, i = 0;
+    int opn, nops, n_dicionario, chave, i = 0;
     ITEM mov, *p;
     ARV * TR = NULL;
 
@@ -42,8 +42,55 @@ int main()
 
             case 2:
             // atualizar dicionario
-                abb_apagar (&TR);
-                break;
+                scanf("%d", &n_dicionario);
+                switch(opn)
+                {
+                    // criar dicionario novamente
+                    case 1:
+                    if(TR == NULL)
+                    {
+                        TR = abb_criar();
+                        printf("1\n");
+                    }
+                    else{
+                        abb_apagar (&TR);
+                        TR = abb_criar();
+                        printf("1\n");
+                    }
+                    /* duvida, vai atualizar de novo (?) Recursivo talvez
+                    case 2:
+                    */
+
+                    case 3:
+                    // apagar dicionário
+                        for(i = 0; i < nops; ++i)
+                        {
+                            scanf("%d %s", &mov.chave, mov.nome);
+
+                            printf("%d\n", abb_inserir(TR, mov));
+                        }
+                        break;
+
+                    case 4:
+                    // verificar texto
+                        scanf("%d", &nops);
+                        for(i = 0; i < nops; ++i)
+                        {
+                            scanf("%d", &chave);
+                            printf("%d\n", abb_remover(TR, chave));
+                        }
+                        break;
+
+                    case 0:
+                    // sair da aplicação
+                        abb_apagar(&TR);
+                        return 0;
+                        break;
+
+                    default:
+                        return 1;
+                        break;
+                }
 
             case 3:
             // apagar dicionario
