@@ -11,8 +11,10 @@ int main()
     /* opn = opção selecionada pelo usuario
         nops = numero de operaçoes requisitadas
         chave: chave a ser buscada 
-        mov: filme retornado pela busca  */
-    int opn, nops, n_dicionario, chave, i = 0;
+        mov: filme retornado pela busca
+        m_dicionario: numero do dicionario existente
+        adicionar_remover: adicionar ou remover as palavras (0 ou 1)  */
+    int opn, nops, n_dicionario, adicionar_remover, chave, i = 0;
     ITEM mov, *p;
     ARV * TR = NULL;
 
@@ -28,7 +30,7 @@ int main()
             // não criar uma lista sem antes apagar uma já existente, perdendo acesso a anterior
                 if (TR == NULL)
                 {
-                    TR = abb_criar();
+                    TR = avl_criar();
                     printf("1\n");
                 }
                 else
@@ -43,55 +45,26 @@ int main()
             case 2:
             // atualizar dicionario
                 scanf("%d", &n_dicionario);
-                switch(opn)
-                {
-                    // criar dicionario novamente
-                    case 1:
-                    if(TR == NULL)
+
+                // if(n_dicionario ) 
+                
+                do{
+                    scanf("%d %s", &adicionar_remover, mov.nome);
+
+                    if(adicionar_remover == 1) // adicionar a palavra no dicionário
+                    { 
+                        avl_inserir(AVL *T, ITEM item);
+
+                    }
+
+                    if(adicionar_remover == 0) // remover a palavra no dicionário 
                     {
-                        TR = abb_criar();
-                        printf("1\n");
+                        avl_remover(AVL *T, ITEM item);
+                    
                     }
-                    else{
-                        abb_apagar (&TR);
-                        TR = abb_criar();
-                        printf("1\n");
-                    }
-                    /* duvida, vai atualizar de novo (?) Recursivo talvez
-                    case 2:
-                    */
 
-                    case 3:
-                    // apagar dicionário
-                        for(i = 0; i < nops; ++i)
-                        {
-                            scanf("%d %s", &mov.chave, mov.nome);
 
-                            printf("%d\n", abb_inserir(TR, mov));
-                        }
-                        break;
-
-                    case 4:
-                    // verificar texto
-                        scanf("%d", &nops);
-                        for(i = 0; i < nops; ++i)
-                        {
-                            scanf("%d", &chave);
-                            printf("%d\n", abb_remover(TR, chave));
-                        }
-                        break;
-
-                    case 0:
-                    // sair da aplicação
-                        abb_apagar(&TR);
-                        return 0;
-                        break;
-
-                    default:
-                        return 1;
-                        break;
-                }
-
+                }while(adicionar_remover != '#');
             case 3:
             // apagar dicionario
                 //printf("Numero de Insercoes:\n");
@@ -100,7 +73,7 @@ int main()
                 {
                     scanf ("%d %s",&mov.chave, mov.nome);
 
-                    printf ("%d\n", abb_inserir(TR, mov));
+                    printf ("%d\n", avl_inserir(TR, mov));
                 }
                 break;
 
@@ -111,13 +84,13 @@ int main()
                 for (i = 0; i < nops; ++i)
                 {
                     scanf ("%d", &chave);
-                    printf ("%d\n", abb_remover(TR, chave));
+                    printf ("%d\n", avl_remover(TR, chave));
                 }
                 break;
 
             case 0:
             // sair da aplicacao
-                abb_apagar (&TR);
+                avl_apagar (&TR);
                 return 0;
                 break;
 
