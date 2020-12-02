@@ -20,6 +20,7 @@ int main()
     int opn, nops, n_dicionario, adicionar_remover, chave, i = 0;
     char mov[TAM_MAX], *p;
     AVL * TR = NULL, * DICIONARIOS[3] = {NULL, NULL, NULL}, * dic;
+    bool criou;
 
     while (1)
     {
@@ -31,47 +32,63 @@ int main()
             case 1:
             // criar dicionario
             // não criar uma lista sem antes apagar uma já existente, perdendo acesso a anterior
-                if (DICIONARIOS[1] == NULL)
+            criou = FALSE;
+
+            // CRIA UM DICIONARIO DE ID i +1.
+            for (int i = 0; i <= 3 && !criou; i++)
+            {
+                if (DICIONARIOS[i] == NULL)
                 {
-                    DICIONARIOS[1] = avl_criar();
-                    printf("1\n");
+                    DICIONARIOS[i] = avl_criar();
+                    printf("DICIONARIO %d CRIADO\n", i+1);
+                    criou = TRUE;
                 }
-                else
-                {
-                    avl_apagar (&TR);
-                    DICIONARIOS[1] = avl_criar();
-                    printf("1\n");
+                if(i == 3){
+                    printf("IMPOSSIVEL CRIAR\n");
                 }
+            }
+            
+            if (criou)
+            {
+                while (1){
+                    
+                    fgets(mov, TAM_MAX, stdin);
+
+                    if (mov == '#')
+                        break;
+
+                    avl_inserir(DICIONARIOS[i+1], mov);
+                }
+            }
                 
                 break;
 
             case 2:
             // atualizar dicionario
+            
                 scanf("%d", &n_dicionario);
                 dic = DICIONARIOS[n_dicionario];
-                // if(n_dicionario ) 
-                
-                while (1){
-                    scanf("%d", &adicionar_remover);
-
-                    if (adicionar_remover == '#')
-                        break;
-
-                    fgets(mov, TAM_MAX, stdin);
-
-                    if(adicionar_remover == 1) // adicionar a palavra no dicionário
-                    { 
-                        dicionario_inserir(dic, mov);
-
-                    }
-
-                    if(adicionar_remover == 0) // remover a palavra no dicionário 
+                if (n_dicionario > 3 || n_dicionario < 1 || DICIONARIOS[n_dicionario] == NULL)
+                {
+                    printf("DICIONARIO %d INEXISTENTE\n",  n_dicionario);
+                }
+                else
+                {        
+                    while (1)
                     {
-                        avl_remover(dic, mov);
-                    
+                        scanf("%d", &adicionar_remover);
+
+                        if (adicionar_remover == '#')
+                            break;
+
+                        fgets(mov, TAM_MAX, stdin);
+
+                        if(adicionar_remover) // adicionar a palavra no dicionário
+                            avl_inserir(dic, mov);
+
+                        else // remover a palavra no dicionário 
+                            avl_remover(dic, mov);
                     }
-
-
                 }
             //case 3:
             // apagar dicionario
