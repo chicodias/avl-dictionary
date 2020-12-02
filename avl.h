@@ -13,20 +13,23 @@
 #define FILHO_ESQ 0 
 #define FILHO_DIR 1
 
+// tamanho maximo da string
+#define TAM_MAX 60
+
 typedef struct avl AVL;
 typedef char * ITEM;
 
 /* Funções deste TAD */
 
-AVL * avl_criar (void); /*Criacao da ABB e retorno do seu ponteiro*/
+AVL * avl_criar (void); /*Criacao da AVL e retorno do seu ponteiro*/
 
 void avl_apagar (AVL **T); /*Apaga todo o conteudo da lista e libera o bloco de memoria*/
 
-bool avl_inserir (AVL *T, ITEM item); /*Insere o ITEM na ABB*/
+bool avl_inserir (AVL *T, ITEM item); /*Insere o ITEM na AVL*/
 
-bool avl_remover (AVL *T, int chave); /* REMOVE um item da arvore */
+bool avl_remover (AVL *T, ITEM chave); /* REMOVE um item da arvore */
 
-ITEM * avl_buscar (AVL *T, int chave); /*Busca a chave na lista e e a retorna. se nao existir, retorna ERRO*/
+ITEM * avl_buscar (AVL *T, ITEM chave); /*Busca a chave na lista e e a retorna. se nao existir, retorna ERRO*/
 
 void avl_imprimir (AVL * T); /*Imprime os elementos na arvore ordenadamente*/
 

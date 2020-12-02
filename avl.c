@@ -5,8 +5,10 @@
 #include "avl.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define max(a, b) ((a > b) ? a : b)
+
 
 typedef struct no NO;
 
@@ -24,15 +26,18 @@ struct avl
 };
 
 
-
-
 /* Cabeçalhos das funções de apoio internas ao TAD: */
 void avl_apagar_nos (NO ** raiz);
 bool avl_inserir_no (NO *raiz, ITEM item);
 NO * avl_inserir_filho (int filho, NO *no, ITEM item);
-NO* avl_buscar_no (NO* raiz, int chave);
-bool avl_remover_no (NO **raiz, int chave);
+NO* avl_buscar_no (NO* raiz, ITEM chave);
+void avl_imprimir_no (NO * r);
+bool avl_remover_no (NO **raiz, ITEM chave);
 int avl_altura_no (NO * T);
+NO *rodar_direita_esquerda(NO *a);
+NO *rodar_esquerda_direita(NO *a);
+NO * rodar_esquerda(NO *a);
+NO * rodar_direita(NO *a);
 
 
 AVL * avl_criar (void) /*Criacao da AVL e retorno do seu ponteiro*/
@@ -85,7 +90,7 @@ bool avl_inserir (AVL *T, ITEM item)
         }    
     }  
    // nao inserir um elemento repetido na arvore
-    if (avl_buscar(T, item.chave) == NULL)
+    if (avl_buscar(T, item) == NULL)
         return (avl_inserir_no (T->raiz, item));
 
     // elemento ja estava na arvore
@@ -95,25 +100,54 @@ bool avl_inserir (AVL *T, ITEM item)
 // função de apoio - interna no .c do TAD 
 bool avl_inserir_no (NO *raiz, ITEM item) 
 { 
-    if (item.chave < raiz->item.chave) 
+    bool res = TRUE;
+
+    // se esta a esquerda da raiz
+    if (strcmp(item, raiz->item) < 0) 
     {   
+        // insere na esquerda da raiz
         if (raiz->esq != NULL) 
-            return (avl_inserir_no(raiz->esq, item));
+            res = avl_inserir_no(raiz->esq, item);
+
+        // insere no filho esquerdo
         else
-            return (avl_inserir_filho(FILHO_ESQ, raiz, item)!=NULL);
+            res = avl_inserir_filho(FILHO_ESQ, raiz, item)!=NULL;
+        
+        // desbalanceamento pro lado esquerdo
+        if (avl_altura_no(raiz->esq) - avl_altura_no(raiz->dir) == 2)
+        {
+            if (strcmp(item, raiz->esq->item) < 0)
+                raiz = rodar_direita(raiz);  // Caso 2.1 
+            else            
+                raiz = rodar_esquerda_direita(raiz); // Caso 2.2      
+        }
+
     } 
+    // a direita da saiz
     else
     { 
-        if (item.chave > raiz->item.chave) 
+        if (strcmp(item, raiz->item) > 0) 
         { 
             if(raiz->dir != NULL) 
-                return avl_inserir_no(raiz->dir, item); 
+                res = avl_inserir_no(raiz->dir, item); 
             else
-                return (avl_inserir_filho(FILHO_DIR, raiz, item)!=NULL);      
-        } 
+                res = avl_inserir_filho(FILHO_DIR, raiz, item)!=NULL;      
+            
+            // desbalanceamento pro lado direito
+            if (avl_altura_no(raiz->esq) - avl_altura_no(raiz->dir) == -2)
+            {
+                if (strcmp(item, raiz->dir->item) > 0)
+                    raiz = rodar_esquerda(raiz);  // Caso 1.1 
+                else            
+                    raiz = rodar_direita_esquerda(raiz); // Caso 1.2      
+            }            
+        }
         else
-            return (FALSE);     
-    } 
+            res = FALSE;     
+    }
+    raiz->altura = max(avl_altura_no(raiz->esq), avl_altura_no(raiz->dir)) + 1; 
+    
+    return res;
 }
 
 // função de apoio – interna ao .c do TAD
@@ -136,7 +170,7 @@ NO *avl_inserir_filho (int filho, NO *no, ITEM item)
 }
 
 /* busca uma chave na árvore e retorna o respectivo item */
-ITEM * avl_buscar (AVL *T, int chave)
+ITEM * avl_buscar (AVL *T, ITEM chave)
 { 
     if(T == NULL) 
         return NULL; 
@@ -152,23 +186,23 @@ ITEM * avl_buscar (AVL *T, int chave)
 } 
 
 /* funcao auxiliar ao TAD */
-NO* avl_buscar_no (NO* raiz, int chave) 
+NO* avl_buscar_no (NO* raiz, ITEM chave) 
 { 
     if(raiz == NULL)
         return NULL;     
 
     else 
-        if(chave == raiz->item.chave)
+        if(strcmp(chave,raiz->item) == 0)
             return (raiz);      
         else 
-            if (chave < raiz->item.chave) 
+            if (strcmp(chave, raiz->item) < 0) 
                 return (avl_buscar_no(raiz->esq, chave));        
             else 
                 return (avl_buscar_no(raiz->dir, chave));
 }
 
 /* REMOVE um elemento da árvore. retorna TRUE se conseguir ou FALSE caso contrario */
-bool avl_remover (AVL *T, int chave)
+bool avl_remover (AVL *T, ITEM chave)
 {    
     if (T != NULL)
         return (avl_remover_no (&T->raiz, chave)); 
@@ -177,25 +211,49 @@ bool avl_remover (AVL *T, int chave)
 }
 
  // função interna no .c 
-bool avl_remover_no (NO **raiz, int chave)
+bool avl_remover_no (NO **raiz, ITEM chave)
 {
+    bool res = TRUE;
+
     if ((*raiz) == NULL) 
-        return (FALSE); // chave não existe
+        return FALSE; // chave não existe
         
-    if((*raiz)->item.chave == chave)
+    if(strcmp((*raiz)->item, chave) == 0)
     { //chave encontrada     
-        NO *aux = (*raiz);  // CASOS 1 e 2 
+        NO *aux = (*raiz);
+        // CASOS 1 : filho esquerdo vazio 
         if ((*raiz)->esq == NULL) 
         {          
             (*raiz) = (*raiz)->dir; 
             free(aux);          
-            aux = NULL;       
+            aux = NULL;
+
+            // desbalanceamento pro lado esquerdo
+            if (avl_altura_no((*raiz)->esq) - avl_altura_no((*raiz)->dir) == 2)
+            {
+                if (strcmp(chave, (*raiz)->esq->item) < 0)
+                    *raiz = rodar_direita(*raiz);  // Caso 2.1 
+                else            
+                    *raiz = rodar_esquerda_direita(*raiz); // Caso 2.2      
+            }
+                   
         }   
+        // CASO 2: filho direito vazio
         else if ((*raiz)->dir == NULL) 
         {              
             (*raiz) = (*raiz)->esq; 
             free(aux);              
             aux = NULL;           
+
+            // desbalanceamento pro lado direito
+            if (avl_altura_no((*raiz)->esq) - avl_altura_no((*raiz)->dir) == -2)
+            {
+                if (strcmp(chave, (*raiz)->dir->item) > 0)
+                    *raiz = rodar_esquerda(*raiz);  // Caso 1.1 
+                else            
+                    *raiz = rodar_direita_esquerda(*raiz); // Caso 1.2      
+            }
+
         }
         else 
         {// CASO 3 – troca
@@ -213,14 +271,32 @@ bool avl_remover_no (NO **raiz, int chave)
             (*raiz) = u;
             free(aux);
             aux = NULL;
+
+
+            // desbalanceamento pro lado esquerdo
+            if (avl_altura_no((*raiz)->esq) - avl_altura_no((*raiz)->dir) == 2)
+            {
+                if (strcmp(chave, (*raiz)->esq->item) < 0)
+                    *raiz = rodar_direita(*raiz);  // Caso 2.1 
+                else            
+                    *raiz = rodar_esquerda_direita(*raiz); // Caso 2.2      
+            }
+
+
         }      
     }
-    else if ((*raiz)->item.chave > chave) 
-        avl_remover_no (&(*raiz)->esq, chave); 
+    else if (strcmp ((*raiz)->item, chave) > 0)
+    { 
+        res = avl_remover_no (&(*raiz)->esq, chave); 
+    }
     else
-        avl_remover_no (&(*raiz)->dir, chave); 
-    
-    return (TRUE);     
+    {
+        res = avl_remover_no (&(*raiz)->dir, chave); 
+    }
+
+    (*raiz)->altura = max(avl_altura_no((*raiz)->esq), avl_altura_no((*raiz)->dir)) + 1; 
+
+    return res;     
 }
 
 /* retorna a altura de uma árvore */
@@ -232,16 +308,13 @@ int avl_altura (AVL * T)
 }
 
 /* Função auxiliar ao TAD */
-int avl_altura_no (NO * T)
+int avl_altura_no (NO * no)
 {
-    if (T == NULL) 
-      return -1; // altura da árvore vazia
-   else {
-      int he = avl_altura_no (T->esq);
-      int hd = avl_altura_no (T->dir);
-      if (he < hd) return hd + 1;
-      else return he + 1;
-   }
+    if (no == NULL) 
+        return -1;
+    else 
+        return no->altura;     
+    
 }
 void avl_imprimir (AVL * T){
     avl_imprimir_no (T->raiz);
@@ -252,9 +325,9 @@ void avl_imprimir_no (NO * r)
 {
     if (r == NULL) return;
     
-    avl_imprimir(r->esq);
+    avl_imprimir_no(r->esq);
     printf("%s\n",r->item); 
-    avl_imprimir(r->dir);
+    avl_imprimir_no(r->dir);
 }
 
 /*  VERIFICA SE A avl É VAZIA */
