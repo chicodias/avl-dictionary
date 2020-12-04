@@ -16,8 +16,9 @@ int main()
         m_dicionario: numero do dicionario existente
         adicionar_remover: adicionar ou remover as palavras (0 ou 1)  
         DICS: vetor que armazena o endereço dos tres dicionarios
+        palavras_frequentes:  quantidade de palavras frequentes
         */
-    int opn, nops, n_dicionario, adicionar_remover, chave, i = 0;
+    int opn, nops, n_dicionario, adicionar_remover, palavras_frequentes, chave, i = 0;
     char mov[TAM_MAX], *p;
     AVL * TR = NULL, * DICIONARIOS[3] = {NULL, NULL, NULL}, * dic;
     bool criou;
@@ -90,27 +91,43 @@ int main()
                             avl_remover(dic, mov);
                     }
                 }
-            //case 3:
+            case 3:
             // apagar dicionario
-                //printf("Numero de Insercoes:\n");
-                //scanf ("%d", &nops);
-                //for (i = 0; i < nops; ++i)
-                //{
-                   // scanf ("%d %s",&mov.chave, mov.nome);
+                scanf("%d", &n_dicionario); // lendo a operação e o numero do dicionaro que vai apagar
 
-                   // printf ("%d\n", avl_inserir(TR, mov));
-                //}
-                //break;
+                dic = DICIONARIOS[n_dicionario];
+                if(n_dicionario > 3 || n_dicionario < 1 || DICIONARIOS[n_dicionario] == NULL) // verifica a existência do dicionário
+                {
+                    printf("DICIONARIO %d INEXISTENTE\n", n_dicionario);
+                }
+
+                else
+                {
+                    avl_apagar(dic);
+                    printf("DICIONARIO %d APAGADO", n_dicionario);
+                }
+                break;
 
             case 4:
             // verificar texto
-                //printf ("Numero de remocoes:\n");
-                scanf ("%d", &nops);
-                for (i = 0; i < nops; ++i)
+                scanf("%d %d", &n_dicionario, &palavras_frequentes); //lendo o id do dicionario e quantas palavras mais frequentes aparecem
+
+                if( palavras_frequentes <= 0)
+                    printf("IMPOSSIVEL INFORMAR %d PALAVRAS MAIS FREQUENTES", palavras_frequentes);
+
+
+                if(n_dicionario > 3 || n_dicionario < 1 || DICIONARIOS[n_dicionario] == NULL) // verifica a existência do dicionário
                 {
-                    scanf ("%d", &chave);
-                 //   printf ("%d\n", avl_remover(TR, chave));
+                    printf("DICIONARIO %d INEXISTENTE\n", n_dicionario);
                 }
+                else
+                {
+                    while(1)
+                    {
+                        avl_inserir(AVL *T, ITEM item);
+                    }
+                }
+
                 break;
 
             case 0:
