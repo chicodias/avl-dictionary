@@ -1,5 +1,5 @@
-all: dicionario.o avl.o main.o
-	gcc -std=c99 -Wall dicionario.c avl.c main.c -o trab2
+all: avl.o main.o
+	gcc -std=c99 -Wall avl.c main.c -o trab2
 	
 clean:
 	rm *.o trab2

@@ -15,7 +15,7 @@ int main()
         chave: chave a ser buscada 
         mov: palavra retornada pela busca  */
     int opn, nops, i = 0, n_dicionario, palavras_frequentes;
-    ITEM mov, *p;
+    ITEM mov;
     ARV * TR = NULL;
     ARV * DICIONARIOS[3] = {NULL, NULL, NULL}, ** dic; //armazena o endereco do dicionario a ser utililado
     bool criou;
@@ -33,7 +33,7 @@ int main()
             criou = FALSE;
 
                 // CRIA UM DICIONARIO DE ID i +1.
-                for (int i = 0; i <= 3 && !criou; i++)
+                for (i = 0; i <= 3 && !criou; i++)
                 {
                     if (DICIONARIOS[i] == NULL)
                     {
@@ -109,7 +109,7 @@ int main()
                     printf("DICIONARIO %d APAGADO\n", n_dicionario);
                 
                 }
-
+                break;
             case 4:
 
                 // verificar texto
@@ -143,7 +143,7 @@ int main()
                 break;
 
             case 0:
-                for (int i = 0; i <= 3; i++)
+                for (i = 0; i < 3; i++)
                     if (DICIONARIOS[i] != NULL)
                         avl_apagar (&DICIONARIOS[i]);
 
