@@ -34,6 +34,6 @@ int cheia(FILA_PRIOR *fp);
 int vazia(FILA_PRIOR *fp);
 int inserir (FILA_PRIOR *fp, ITEM *item);
 ITEM *remover (FILA_PRIOR *fp);
-
+int avl_tamanho(ARV * T)
 
 #endif /* heap.h */

@@ -23,12 +23,13 @@ void swap (FILA_PRIOR *fp, int i, int j);
 void fila_inserir (FILA_PRIOR * f, ITEM item)
 {
 
-    if(!buscar(f,item))
+    if(buscar(f,item)==FALSE)
     {
         ITEM * i = malloc (sizeof(ITEM));
         i->chave = 1;
         strcpy(i->nome, item.nome);
         printf("inseriu\n");
+        inserir(f,i);
         return;
     }
     printf("nao inseriu\n");
@@ -38,7 +39,9 @@ void fila_inserir (FILA_PRIOR * f, ITEM item)
 bool buscar(FILA_PRIOR * f, ITEM item)
 {
     printf("buscando por %s", item.nome);
-    for(int i = 0; i< f->fim; i++)
+    for(int i = 0; i< f->fim; i++){
+
+        printf("%d", i);
         if( strcmp(f->vetor[i]->nome, item.nome) == 0)
         {
             printf("encontrou");
@@ -46,6 +49,8 @@ bool buscar(FILA_PRIOR * f, ITEM item)
             fix_up(f);
             return TRUE;
         }
+   
+     }
     return FALSE;
 }
 
