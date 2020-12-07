@@ -393,6 +393,8 @@ NO *rodar_direita_esquerda(NO *a)
 }
 
 /* Computes the number of nodes in a tree. */
+/* @param: recebe um NÓ 
+   @retorno: retorna o numero de nós na arvore ou erro se a arvore não foi alocada */ 
 int avl_tamanho_nos(NO* no)  
 {   
   if (no==NULL)  
@@ -400,7 +402,8 @@ int avl_tamanho_nos(NO* no)
   else     
     return(size(no->esq) + 1 + size(no->dir));   
 } 
-
+/* @param: recebe uma AVL
+   @retorno: retorna o número de nós na arvore ou erro se a arvore não foi alocada */
 int avl_tamanho(ARV * T)
 {
     if (T != NULL)
