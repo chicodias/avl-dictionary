@@ -92,7 +92,7 @@ bool avl_inserir (ARV **T, ITEM item)
    // nao inserir um elemento repetido na arvore
     if (avl_buscar(*T, item) == NULL)
         return (avl_inserir_no (&(*T)->raiz, item));
-
+    
     // elemento ja estava na arvore
     return ERRO;    
 }
@@ -111,7 +111,6 @@ bool avl_inserir_no (NO **raiz, ITEM item)
                  // desbalanceamento pro lado esquerdo
         if (avl_altura_no((*raiz)->esq) - avl_altura_no((*raiz)->dir) == 2)
         {
-           printf("desbalanc esq\n");
            if (strcmp(item.nome, (*raiz)->esq->item.nome) < 0)
                     *raiz = rodar_direita(*raiz);  // Caso 2.1 
                 else            
@@ -132,8 +131,6 @@ bool avl_inserir_no (NO **raiz, ITEM item)
          // desbalanceamento pro lado direito
             if (avl_altura_no((*raiz)->esq) - avl_altura_no((*raiz)->dir) == -2)
             {
-                printf("desbalanc dir\n");
-                
                 if (strcmp(item.nome, (*raiz)->dir->item.nome) > 0)
                     *raiz = rodar_esquerda(*raiz);  // Caso 1.1 
                 else            
@@ -161,6 +158,7 @@ NO *avl_inserir_filho (int filho, NO *no, ITEM item)
         pnovo->esq = NULL; 
         pnovo->item = item; 
         pnovo->altura = 0;
+        pnovo->item.freq = 0;
         
         if (filho == FILHO_ESQ)
             no->esq = pnovo; 
@@ -192,9 +190,12 @@ NO* avl_buscar_no (NO* raiz, ITEM chave)
     if(raiz == NULL)
         return NULL;     
 
-    else 
+    else //encontrou
         if(strcmp(chave.nome, raiz->item.nome) == 0)
+        {
+            raiz->item.freq++;
             return (raiz);      
+        }
         else 
             if (strcmp(chave.nome, raiz->item.nome) < 0) 
                 return (avl_buscar_no(raiz->esq, chave));        
@@ -241,15 +242,18 @@ bool avl_remover_no (NO **raiz, ITEM chave)
                 ITEM tmp;
                 while (t != NULL && t->dir != NULL)
                     t = t->dir; 
-                    
+            
+            // copia o conteúdo desse nó, remove-o da árvore, em seguida substitui pelo nó a ser 
+            // inicialmente removido
                 strcpy(tmp.nome, t->item.nome);
+                tmp.freq = t->item.freq;
+                
                 avl_remover_no(raiz, t->item);
+                
                 strcpy((*raiz)->item.nome, tmp.nome);
+                (*raiz)->item.freq = tmp.freq;
             }
             res= TRUE;
-
-            //atualizar alturas
-            //(*raiz)->altura = max(avl_altura_no((*raiz)->esq), avl_altura_no((*raiz)->dir)) + 1; 
         }
         else if (strcmp(chave.nome, (*raiz)->item.nome) < 0)
             res=avl_remover_no (&(*raiz)->esq, chave); 
@@ -285,6 +289,7 @@ bool avl_remover_no (NO **raiz, ITEM chave)
     }
     return res;
 }
+
 
 /* retorna a altura de uma árvore */
 int avl_altura (ARV * T)

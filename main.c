@@ -128,17 +128,29 @@ int main()
 
                 if (TR == NULL)
                     TR = avl_criar();
-                else break; // o que é pra fazer?
-                
+                else break; 
+                ARV * uniq = avl_criar();
                 // le as palavras
                 while(1)
                 {
                     scanf (" %s",mov.nome);
 
                     if(strcmp(mov.nome,"#") == 0) break;                 
+                    // insere as palavras e contabiliza a frequencia das repetidas
+                    avl_inserir(TR, mov);
+                    // se nao encontrar no dicionario, insere como palavra unica
+                    if( avl_buscar(*dic, mov) == NULL)
+                        avl_inserir(&uniq, mov);
 
-                    avl_inserir(dic, mov);
                 }
+
+                avl_imprimir(uniq);
+
+                // organizar TR por ordem de frequencia
+                // imprimir os termos de acordo com ela até que 
+                // palavras_frequentes termos sejam impressos
+
+                avl_apagar(&uniq);
                 avl_apagar(&TR);
                 break;
 

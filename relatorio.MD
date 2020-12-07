@@ -7,9 +7,42 @@
 
 ##### Hiago Américo, nUSP: 11218469. Francisco Dias, nUSP: 4402962.
 
-**Objetivo:** Fazer a leitura de um texto e verificar as palavras mais frequentes presentes, de acordo com um dicionário criado pelo usuário.
+**Objetivo:** Este relatório tem como objetivo explicar os algoritmos e estruturas de dados utilizados na criação de um programa para avaliar trechos utilizando dicionários pré-fornecidos, retornando as palavras do trecho que não estão contidas no dicionário e as palavras mais frequentes do trecho que são palavras-chave.
+
+## Descrição do problema
+
+A classificação de conteúdo textual é um dos grandes desafios atuais da área conhecida como processamento de linguagem natural (PLN). Neste trabalho, entendemos como **classificação** a técnica de identificar um conjunto de significados ou conceitos de um texto.
+
+Uma das maneiras de criar algoritmos que sejam capazes de reconhecer o conteúdo de um texto, é filtrando as palavras mais pertinentes ao domínio do tema objetivo, e excluindo palavras "comuns" da linguagem, ou seja, que não agreguem significado semântico para a análise. Dessa forma, o assunto pode ser indicado pela alta presença de palavras relevantes que não façam parte de um dicionário pré-estabelecido.
+
+O programa criado tem como principal objetivo verificar trechos de texto a partir de um dicionário e retornar as palavras não encontradas e as $n$ palavras do dicionário mais frequentes no trecho, com suas respectivas frequências.
 
 ## Modelagem
+
+Para escolher qual estrutura de dados será mais adequada para resolver o problema, primeiramente pensemos nas primitivas que estarão envolvidas em tempo de execução. Dentro das quatro opções apresentadas ao usuário, temos:
+
+- **1**: Criar dicionário
+  - Um dicionário é criado, se for possível,
+  - O usuário digita as palavras a serem adicionadas ao dicionário.
+- **2**: Atualizar dicionário
+  - O usuário informa o dicionário a ser alterado,
+  - É informado (1) para uma inserção ou (0) para uma remoção
+  - A palavra é atualizada no dicionário.
+- **3**: Apagar dicionário
+  - É informado a ID de um dicionário, em seguida removido.
+- **4**: Verificar texto
+  - É informada a ID de um dicionário e um inteiro inteiro $n$ de palavras mais frequentes a ser retornado,
+  - O trecho é informado,
+  - O programa retorna as palavras não contidas no dicionário e as $n$ mais frequentes, em ordem alfabética e de frequência.
+
+O final da entrada é indicado pelo caractere '#'. Dessa forma, não é sabido pelo programador o tamanho da entrada em pré-execução. Assim, é mandatório a utilização de TAD's com alocacão dinâmica de memória.
+
+
+
+Como um pré-requisito para a criação de nosso programa era a necessidade da utilização de **estruturas de dados não lineares**, escolhemos modelar o problema através a adoção de **árvores AVL**.
+
+Uma **árvore AVL** (assim chamada devido ao nome de seus inventores, Adelson-Velsky and Landis) é uma árvore binária de busca auto-balaceada.
+
 Este relatório tem o intuito de explicar os TAD's utilizados em nosso código. Demonstraremos também informações sobre nossa implementação em linguagem em C na documentação do código.
 
 Utilizamos a estrutura Árvore AVL(Adelson-Velskii e ) (..)

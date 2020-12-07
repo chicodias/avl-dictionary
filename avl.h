@@ -29,7 +29,7 @@ ITEM;
 typedef struct arv_ ARV;
 
 /* Funções deste TAD */
-void print2D(ARV * root);
+
 ARV * avl_criar (void); /*Criacao da avl e retorno do seu ponteiro*/
 
 void avl_apagar (ARV **T); /*Apaga todo o conteudo da lista e libera o bloco de memoria*/
