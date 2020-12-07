@@ -400,7 +400,7 @@ int avl_tamanho_nos(NO* no)
   if (no==NULL)  
     return 0; 
   else     
-    return(size(no->esq) + 1 + size(no->dir));   
+    return(avl_tamanho_nos(no->esq) + 1 + avl_tamanho_nos(no->dir));   
 } 
 /* @param: recebe uma AVL
    @retorno: retorna o número de nós na arvore ou erro se a arvore não foi alocada */
@@ -408,4 +408,6 @@ int avl_tamanho(ARV * T)
 {
     if (T != NULL)
         return avl_tamanho_nos(T->raiz);
+    else
+        return ERRO;
 }

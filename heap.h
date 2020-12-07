@@ -27,13 +27,14 @@ void fila_inserir (FILA_PRIOR * f, ITEM item);
 
 
 bool buscar(FILA_PRIOR * f, ITEM item);
+void excluir (FILA_PRIOR * F);
 
 
-FILA_PRIOR *criar();
+FILA_PRIOR *criar(int n);
 int cheia(FILA_PRIOR *fp);
 int vazia(FILA_PRIOR *fp);
 int inserir (FILA_PRIOR *fp, ITEM *item);
 ITEM *remover (FILA_PRIOR *fp);
-int avl_tamanho(ARV * T)
+int avl_tamanho(ARV * T);
 
 #endif /* heap.h */

@@ -160,7 +160,7 @@ int main()
                 break;
             case 5:
                 
-                F = criar();
+                F = criar(avl_tamanho(*dic));
 
                 while(1)
                 {
@@ -172,6 +172,8 @@ int main()
                     fila_inserir(F, mov);
                     imprimir(F);
                 }    
+                imprimir(F);
+                excluir(F);
             break;
 
             case 0:
