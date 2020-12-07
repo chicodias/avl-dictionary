@@ -10,15 +10,35 @@
 
 struct fila_prior 
 {
-    ITEM* vetor[TAM]; 
+    ITEM ** vetor; 
     int fim; // último elemento 
-    int TAM_M; // tamanho amximo do vetor
+    int TAM_MAX; // tamanho maximo do vetor
 };
 
 /* funcoes internas ao tad */
 void fix_down(FILA_PRIOR *fp);
 void fix_up(FILA_PRIOR *fp);
 void swap (FILA_PRIOR *fp, int i, int j);
+
+
+FILA_PRIOR *criar(int n) 
+{ 
+    FILA_PRIOR *fp = (FILA_PRIOR*)malloc(sizeof(FILA_PRIOR));
+    if (fp != NULL)
+    {
+        fp->fim = -1;     
+        fp->vetor = (ITEM **)malloc(n*sizeof(ITEM *));
+    }
+     
+    return fp;   
+}
+
+void excluir (FILA_PRIOR * F)
+{
+    free(F->vetor);
+    free(F);
+}
+
 
 void fila_inserir (FILA_PRIOR * f, ITEM item)
 {
@@ -38,19 +58,19 @@ void fila_inserir (FILA_PRIOR * f, ITEM item)
 
 bool buscar(FILA_PRIOR * f, ITEM item)
 {
-    printf("buscando por %s", item.nome);
-    for(int i = 0; i< f->fim; i++){
-
-        printf("%d", i);
+    printf("buscando por %s\n", item.nome);
+    for(int i = 0; i< f->fim; i++)
+    {
+        printf("%d\n", i);
         if( strcmp(f->vetor[i]->nome, item.nome) == 0)
         {
-            printf("encontrou");
+            printf("encontrou\n");
             f->vetor[i]->chave++;
             fix_up(f);
             return TRUE;
         }
    
-     }
+    }
     return FALSE;
 }
 
@@ -60,18 +80,11 @@ void imprimir (FILA_PRIOR * f)
         printf("%d %s\n",f->vetor[i]->chave, f->vetor[i]->nome);
 }
 
-FILA_PRIOR *criar() 
-{ 
-    FILA_PRIOR *fp =   (FILA_PRIOR*)malloc(sizeof(FILA_PRIOR));
-    if (fp != NULL)
-        fp->fim = -1;     
-     
-    return fp;   
-}
+
 
 int cheia(FILA_PRIOR *fp) 
 {
-    return (fp->fim == TAM - 1);   
+    return (fp->fim == fp->TAM_MAX - 1);   
 } 
 
 int vazia(FILA_PRIOR *fp) 

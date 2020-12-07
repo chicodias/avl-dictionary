@@ -30,6 +30,8 @@ typedef struct arv_ ARV;
 
 /* Funções deste TAD */
 
+int avl_tamanho(ARV * T);
+
 ARV * avl_criar (void); /*Criacao da avl e retorno do seu ponteiro*/
 
 void avl_apagar (ARV **T); /*Apaga todo o conteudo da lista e libera o bloco de memoria*/
