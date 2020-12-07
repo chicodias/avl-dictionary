@@ -61,7 +61,7 @@ void avl_apagar (ARV **T) /*Apaga todo o conteudo da ARV e libera o bloco de mem
         *T = NULL;
     }
 }
-
+/* recebe um NÓ e apaga/desaloca o mesmo */ 
 void avl_apagar_nos (NO ** raiz) /* função interna ao TAD */
 {
     if (*raiz != NULL) 
@@ -73,7 +73,7 @@ void avl_apagar_nos (NO ** raiz) /* função interna ao TAD */
     }
 }
 
-/* @param: um item na arvore,
+/* @param: recebe uma AVL e um item na arvore,
    @retorno: 1 se conseguir ou 0 caso contrario. */
 bool avl_inserir (ARV **T, ITEM item)
 { 
@@ -99,7 +99,9 @@ bool avl_inserir (ARV **T, ITEM item)
     return ERRO;    
 }
 
-// função de apoio - interna no .c do TAD 
+/* função de apoio - interna no .c do TAD
+   @param: um NÓ e um item da árvore
+   @retorno: 1 se conseguir ou 0 caso contrário. */ 
 bool avl_inserir_no (NO **raiz, ITEM item) 
 { 
     bool res = FALSE;
@@ -150,6 +152,8 @@ bool avl_inserir_no (NO **raiz, ITEM item)
 }
 
 // função de apoio – interna ao .c do TAD
+/* @param: recebe um int filho esquerda ou direita, um NÓ, um item e aloca na posição certa da árvore
+   @retorno: retorna o endereço do filho inserido. */
 NO *avl_inserir_filho (int filho, NO *no, ITEM item) 
 {     
     NO * pnovo = (NO *) malloc (sizeof (NO)); 
@@ -171,6 +175,8 @@ NO *avl_inserir_filho (int filho, NO *no, ITEM item)
 }
 
 /* busca uma chave na árvore e retorna o respectivo item */
+/* @param: recebe uma AVL e a chave do NÓ 
+   @retorno: retorna o endereço do ITEM pesquisado.  */
 ITEM * avl_buscar (ARV *T, ITEM chave)
 { 
     if(T == NULL) 
@@ -187,6 +193,8 @@ ITEM * avl_buscar (ARV *T, ITEM chave)
 } 
 
 /* funcao auxiliar ao TAD */
+/* @param: recebe um NÓ e a chave do nó
+   @retorno: retorna o endereço do NÓ procurado.  */
 NO* avl_buscar_no (NO* raiz, ITEM chave) 
 { 
     if(raiz == NULL)
@@ -206,8 +214,8 @@ NO* avl_buscar_no (NO* raiz, ITEM chave)
 }
 
 
-
-/* REMOVE um elemento da árvore. retorna TRUE se conseguir ou FALSE caso contrario */
+/* @param: recebe uma AVL e a chave do elemento
+   @retorno: retorna 1 se conseguir ou 0 caso não exista o nó   */
 bool avl_remover (ARV **T, ITEM chave)
 {    
     if (T != NULL)
@@ -216,7 +224,9 @@ bool avl_remover (ARV **T, ITEM chave)
     return(FALSE);
 }
 
- // função interna no .c 
+ // função interna no .c
+ /* @param: recebe um NÓ e a chave do elemento
+    @retorno: retorna 1 se conseguir ou 0 caso contrário */ 
 bool avl_remover_no (NO **raiz, ITEM chave)
 {
     bool res = FALSE;
@@ -293,7 +303,8 @@ bool avl_remover_no (NO **raiz, ITEM chave)
 }
 
 
-/* retorna a altura de uma árvore */
+/* @param: recebe uma AVL 
+   @retorno: retorna um inteiro informando a altura da arvore */ 
 int avl_altura (ARV * T)
 {
     if (T == NULL)
@@ -302,6 +313,8 @@ int avl_altura (ARV * T)
 }
 
 /* Função auxiliar ao TAD */
+/* @param: recebe um NÓ 
+   @retorno: retorna a altura do NÓ */ 
 int avl_altura_no (NO * no)
 {
     if (no == NULL) 
@@ -310,12 +323,13 @@ int avl_altura_no (NO * no)
         return no->altura; 
 }
 
-/* Imprime a árvore em ordem */
+/* @param: recebe uma AVL para imprimir*/ 
 void avl_imprimir (ARV *T)
 {   
     return avl_imprimir_no(T->raiz);
 }
-    
+
+/* @param: recebe um NÓ para imprimir*/     
 void avl_imprimir_no (NO * r)
 {    
     if (r == NULL) return;
@@ -324,7 +338,9 @@ void avl_imprimir_no (NO * r)
     avl_imprimir_no(r->dir);
 }
 
-/*  VERIFICA SE A avl É VAZIA */
+
+/* @param: recebe uma AVL 
+   @retorno: retorna 1 se for vazia, 0 caso contrário ou -32000 caso não exista a AVL*/ 
 bool avl_vazia (ARV * T)
 {
     if (T == NULL)
@@ -333,7 +349,8 @@ bool avl_vazia (ARV * T)
 }
 
 /* funções de rotação da AVL auxiliares ao TAD */
-
+/* @param: recebe um NÓ
+   @retorno: retorna o endereço da raiz */
 NO * rodar_direita(NO *a) 
 {   
     NO *b = a->esq;   
@@ -345,7 +362,8 @@ NO * rodar_direita(NO *a)
     
     return b;
 }
-
+/* @param: recebe um NÓ
+   @retorno: retorna o endereço da raiz */ 
 NO * rodar_esquerda(NO *a) 
 {    
     NO *b = a->dir;    
@@ -359,13 +377,15 @@ NO * rodar_esquerda(NO *a)
     return b;
 }
 
-
+/* @param: recebe um NÓ
+   @retorno: retorna o endereço da raiz */
 NO *rodar_esquerda_direita(NO *a)   
 {
     a->esq = rodar_esquerda(a->esq);
     return rodar_direita(a);  
 }
-
+/* @param: recebe um NÓ
+   @retorno: retorna o endereço da raiz */
 NO *rodar_direita_esquerda(NO *a)   
 {    
     a->dir = rodar_direita(a->dir); 
