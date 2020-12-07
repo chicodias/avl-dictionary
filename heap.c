@@ -5,11 +5,14 @@
  */
 #include "stdlib.h"
 #include "heap.h"
+#include <string.h>
+#include <stdio.h>
 
 struct fila_prior 
 {
     ITEM* vetor[TAM]; 
-    int fim; // último elemento - w 
+    int fim; // último elemento 
+    int TAM_M; // tamanho amximo do vetor
 };
 
 /* funcoes internas ao tad */
@@ -17,9 +20,44 @@ void fix_down(FILA_PRIOR *fp);
 void fix_up(FILA_PRIOR *fp);
 void swap (FILA_PRIOR *fp, int i, int j);
 
-void fila_inserir (FILA_PRIOR * f)
+void fila_inserir (FILA_PRIOR * f, ITEM item)
 {
-    
+
+    if(buscar(f,item)==FALSE)
+    {
+        ITEM * i = malloc (sizeof(ITEM));
+        i->chave = 1;
+        strcpy(i->nome, item.nome);
+        printf("inseriu\n");
+        inserir(f,i);
+        return;
+    }
+    printf("nao inseriu\n");
+
+}
+
+bool buscar(FILA_PRIOR * f, ITEM item)
+{
+    printf("buscando por %s", item.nome);
+    for(int i = 0; i< f->fim; i++){
+
+        printf("%d", i);
+        if( strcmp(f->vetor[i]->nome, item.nome) == 0)
+        {
+            printf("encontrou");
+            f->vetor[i]->chave++;
+            fix_up(f);
+            return TRUE;
+        }
+   
+     }
+    return FALSE;
+}
+
+void imprimir (FILA_PRIOR * f)
+{
+    for(int i = 0; i<f->fim; i++)
+        printf("%d %s\n",f->vetor[i]->chave, f->vetor[i]->nome);
 }
 
 FILA_PRIOR *criar() 

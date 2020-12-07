@@ -40,7 +40,7 @@ NO *rodar_esquerda_direita(NO *a);
 NO * rodar_esquerda(NO *a);
 NO * rodar_direita(NO *a);
 
-/* @retorna o endereço da raiz de uma AVL */
+/* @retorna o endereço da raiz de uma AVL alocada no heap */
 ARV * avl_criar (void) /*Criacao da avl e retorno do seu ponteiro*/
 {
     ARV *r = (ARV *) malloc (sizeof(ARV));
@@ -258,12 +258,12 @@ bool avl_remover_no (NO **raiz, ITEM chave)
             // copia o conteúdo desse nó, remove-o da árvore, em seguida substitui pelo nó a ser 
             // inicialmente removido
                 strcpy(tmp.nome, t->item.nome);
-                tmp.freq = t->item.freq;
+               // tmp.freq = t->item.freq;
                 
                 avl_remover_no(raiz, t->item);
                 
                 strcpy((*raiz)->item.nome, tmp.nome);
-                (*raiz)->item.freq = tmp.freq;
+                //(*raiz)->item.freq = tmp.freq;
             }
             res= TRUE;
         }
@@ -390,4 +390,19 @@ NO *rodar_direita_esquerda(NO *a)
 {    
     a->dir = rodar_direita(a->dir); 
     return rodar_esquerda(a);  
+}
+
+/* Computes the number of nodes in a tree. */
+int avl_tamanho_nos(NO* no)  
+{   
+  if (no==NULL)  
+    return 0; 
+  else     
+    return(size(no->esq) + 1 + size(no->dir));   
+} 
+
+int avl_tamanho(ARV * T)
+{
+    if (T != NULL)
+        return avl_tamanho_nos(T->raiz);
 }

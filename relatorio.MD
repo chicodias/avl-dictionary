@@ -52,7 +52,7 @@ Este relatório tem o intuito de explicar os TAD's utilizados em nosso código. 
 
 Utilizamos a estrutura Árvore AVL(Adelson-Velskii e ) (..)
 
-- Quais  Estruturas  de  Dados  e  respectivas  abordagens  de  implementaçãoforam escolhidas para modelar o problema? Justifique baseado na solução implementada.
+- Quais  Estruturas  de  Dados  e  respectivas  abordagens  de  implementação foram escolhidas para modelar o problema? Justifique baseado na solução implementada.
 
 - Quais  vantagens  e  limitações  as  estruturas/implementações escolhidas apresentam?
 - Explique claramente e detalhadamente a lógica utilizada para resolver o problema. Como   as   estruturas   (e   respectivas   operações   básicas)   são   utilizadas para representar (e resolver) o problema?

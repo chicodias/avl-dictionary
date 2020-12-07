@@ -20,6 +20,7 @@ int main()
     ARV * TR = NULL;
     ARV * DICIONARIOS[3] = {NULL, NULL, NULL}, ** dic; //armazena o endereco do dicionario a ser utililado
     bool criou;
+    FILA_PRIOR * F;
 
     while (1)
     {
@@ -84,7 +85,7 @@ int main()
                             printf("%d %s\n", nops, mov.nome);
                         
                             if(nops == 1)
-                                if( avl_buscar(dic,mov) == NULL)
+                                if( avl_buscar(*dic,mov) == NULL)
                                     printf ("%d\n", avl_inserir(dic, mov));
                                 else
                                     printf ("%s JA EXISTE EM %d\n",mov.nome,n_dicionario);
@@ -141,7 +142,7 @@ int main()
 
                     if(strcmp(mov.nome,"#") == 0) break;                 
                     // insere as palavras e contabiliza a frequencia das repetidas
-                    avl_inserir(TR, mov);
+                    avl_inserir(&TR, mov);
                     // se nao encontrar no dicionario, insere como palavra unica
                     if( avl_buscar(*dic, mov) == NULL)
                         avl_inserir(&uniq, mov);
@@ -158,7 +159,8 @@ int main()
                 avl_apagar(&TR);
                 break;
             case 5:
-                FILA_PRIOR * F = criar();
+                
+                F = criar();
 
                 while(1)
                 {
@@ -168,6 +170,7 @@ int main()
                     if(strcmp(mov.nome,"#") == 0) break;                 
                     // insere as palavras e contabiliza a frequencia das repetidas
                     fila_inserir(F, mov);
+                    imprimir(F);
                 }    
             break;
 
