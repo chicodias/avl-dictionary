@@ -17,6 +17,10 @@ void fix_down(FILA_PRIOR *fp);
 void fix_up(FILA_PRIOR *fp);
 void swap (FILA_PRIOR *fp, int i, int j);
 
+void fila_inserir (FILA_PRIOR * f)
+{
+    
+}
 
 FILA_PRIOR *criar() 
 { 

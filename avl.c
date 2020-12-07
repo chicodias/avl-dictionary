@@ -40,7 +40,7 @@ NO *rodar_esquerda_direita(NO *a);
 NO * rodar_esquerda(NO *a);
 NO * rodar_direita(NO *a);
 
-
+/* @retorna o endereço da raiz de uma AVL */
 ARV * avl_criar (void) /*Criacao da avl e retorno do seu ponteiro*/
 {
     ARV *r = (ARV *) malloc (sizeof(ARV));
@@ -51,6 +51,7 @@ ARV * avl_criar (void) /*Criacao da avl e retorno do seu ponteiro*/
     return r;
 }
 
+/* recebe uma AVL, apaga seus nós e desaloca da memoria */
 void avl_apagar (ARV **T) /*Apaga todo o conteudo da ARV e libera o bloco de memoria*/
 {
     if (*T != NULL)
@@ -72,7 +73,8 @@ void avl_apagar_nos (NO ** raiz) /* função interna ao TAD */
     }
 }
 
-/* insere um item na arvore, retorna 1 se conseguir ou 0 caso contrario. */
+/* @param: um item na arvore,
+   @retorno: 1 se conseguir ou 0 caso contrario. */
 bool avl_inserir (ARV **T, ITEM item)
 { 
     if (*T == NULL)
