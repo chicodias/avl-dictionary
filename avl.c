@@ -258,12 +258,12 @@ bool avl_remover_no (NO **raiz, ITEM chave)
             // copia o conteúdo desse nó, remove-o da árvore, em seguida substitui pelo nó a ser 
             // inicialmente removido
                 strcpy(tmp.nome, t->item.nome);
-                tmp.freq = t->item.freq;
+               // tmp.freq = t->item.freq;
                 
                 avl_remover_no(raiz, t->item);
                 
                 strcpy((*raiz)->item.nome, tmp.nome);
-                (*raiz)->item.freq = tmp.freq;
+                //(*raiz)->item.freq = tmp.freq;
             }
             res= TRUE;
         }
