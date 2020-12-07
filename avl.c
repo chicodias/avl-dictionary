@@ -158,7 +158,7 @@ NO *avl_inserir_filho (int filho, NO *no, ITEM item)
         pnovo->esq = NULL; 
         pnovo->item = item; 
         pnovo->altura = 0;
-        pnovo->item.freq = 0;
+        //pnovo->item.freq = 0;
         
         if (filho == FILHO_ESQ)
             no->esq = pnovo; 
@@ -193,7 +193,7 @@ NO* avl_buscar_no (NO* raiz, ITEM chave)
     else //encontrou
         if(strcmp(chave.nome, raiz->item.nome) == 0)
         {
-            raiz->item.freq++;
+         //   raiz->item.freq++;
             return (raiz);      
         }
         else 

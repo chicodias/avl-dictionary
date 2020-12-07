@@ -3,7 +3,7 @@
  * Author: Francisco Rosa Dias de Miranda e
  *          Hiago Vinicius Americo
  */
-
+#include "avl.h"
 #ifndef heap_H
 #define heap_H
 
@@ -12,13 +12,13 @@
 typedef
 struct fila_prior FILA_PRIOR;
 
-typedef struct item ITEM;
+/* typedef struct item ITEM;
 
 struct item 
 {
     int elem;
     int chave; // prioridade  
-}; 
+};  */
     
 // protótipos das funções
 

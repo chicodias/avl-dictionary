@@ -19,7 +19,7 @@ O programa criado tem como principal objetivo verificar trechos de texto a parti
 
 ## Modelagem
 
-Para escolher qual estrutura de dados será mais adequada para resolver o problema, primeiramente pensemos nas primitivas que estarão envolvidas em tempo de execução. Dentro das quatro opções apresentadas ao usuário, temos:
+Dentre as cinco opções apresentadas ao usuário, temos:
 
 - **1**: Criar dicionário
   - Um dicionário é criado, se for possível,
@@ -34,14 +34,19 @@ Para escolher qual estrutura de dados será mais adequada para resolver o proble
   - É informada a ID de um dicionário e um inteiro inteiro $n$ de palavras mais frequentes a ser retornado,
   - O trecho é informado,
   - O programa retorna as palavras não contidas no dicionário e as $n$ mais frequentes, em ordem alfabética e de frequência.
+- **5**: Encerrar aplicação
+  - Todas as estruturas são excluídas da memória e a aplicação é finalizada.
 
 O final da entrada é indicado pelo caractere '#'. Dessa forma, não é sabido pelo programador o tamanho da entrada em pré-execução. Assim, é mandatório a utilização de TAD's com alocacão dinâmica de memória.
 
+Para escolher qual estrutura de dados será mais adequada para resolver o problema, primeiramente pensemos nas primitivas que estarão envolvidas em tempo de execução.
+
+Na opção **1**, temos, além da inicialização de um dicionário que abrigará aos termos, a *inserção* de um número arbitrário destes pelo usuário, o que pode ocorrer em ordem alfabética, sendo que não podem haver palavras em duplicidade. Da mesma forma, a opção **2** também precisará fazer uma *busca* para a *inserção*, assim como também para uma eventual *remoção*. Na opção **3**, é feita a *exclusão* de um dos dicionários criados pelo usuário.
+
+Já na opção 4, fazemos a *inserção* do trecho a ser analizado, *buscamos* as palavras que estejam em nosso dicionário, contabilizamos a *frequência* dessas, *imprimimos* as palavras que não foram encontradas no dicionário
 
 
-Como um pré-requisito para a criação de nosso programa era a necessidade da utilização de **estruturas de dados não lineares**, escolhemos modelar o problema através a adoção de **árvores AVL**.
-
-Uma **árvore AVL** (assim chamada devido ao nome de seus inventores, Adelson-Velsky and Landis) é uma árvore binária de busca auto-balaceada.
+Como um pré-requisito para a criação de nosso programa era a necessidade da utilização de **estruturas de dados não lineares**, escolhemos modelar o problema através a adoção de **árvores AVL**. Uma **árvore AVL** (assim chamada devido ao nome de seus inventores, Adelson-Velsky and Landis) é uma árvore binária de busca auto-balaceada.
 
 Este relatório tem o intuito de explicar os TAD's utilizados em nosso código. Demonstraremos também informações sobre nossa implementação em linguagem em C na documentação do código.
 

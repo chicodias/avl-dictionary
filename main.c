@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include "avl.h"
+#include "heap.h"
 #include <string.h>
 
 int main()
@@ -83,7 +84,10 @@ int main()
                             printf("%d %s\n", nops, mov.nome);
                         
                             if(nops == 1)
-                                printf ("%d\n", avl_inserir(dic, mov));
+                                if( avl_buscar(dic,mov) == NULL)
+                                    printf ("%d\n", avl_inserir(dic, mov));
+                                else
+                                    printf ("%s JA EXISTE EM %d\n",mov.nome,n_dicionario);
 
                             else if (nops == 0)
                                 printf ("%d\n",avl_remover(dic, mov));                        
@@ -153,6 +157,19 @@ int main()
                 avl_apagar(&uniq);
                 avl_apagar(&TR);
                 break;
+            case 5:
+                FILA_PRIOR * F = criar();
+
+                while(1)
+                {
+                    scanf (" %s",mov.nome);
+                    mov.chave = 1;
+
+                    if(strcmp(mov.nome,"#") == 0) break;                 
+                    // insere as palavras e contabiliza a frequencia das repetidas
+                    fila_inserir(F, mov);
+                }    
+            break;
 
             case 0:
                 for (i = 0; i < 3; i++)
