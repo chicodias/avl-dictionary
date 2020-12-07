@@ -58,6 +58,28 @@ Utilizamos a estrutura Árvore AVL(Adelson-Velskii e ) (..)
 - Explique claramente e detalhadamente a lógica utilizada para resolver o problema. Como   as   estruturas   (e   respectivas   operações   básicas)   são   utilizadas para representar (e resolver) o problema?
 
 ## Parte 2 – Implementação (60% da nota final)
+
+Apresentaremos as funções utilizadas na implementação do código e a documentação das mesmas. Como utilizamos duas estruturas de dados (Árvore AVL e Fila de Prioridades), teremos então dois arquivos TAD's sendo eles:
+
+- **heap.h**
+  - *FILA_PRIOR criar*: criação da fila;
+  - *int cheia*: recebe uma fila, verifica se ela está cheia e retorna 1 caso esteja ou 0 caso contrário;
+  - *int vazia*: recebe uma fila, verifica se ela está vazia e retorna 1 caso esteja ou 0 caso contrário;
+  - *int inserir*: recebe uma fila e um item para inserir;
+  - *ITEM remover*: remove e retorna o item com maior (menor) prioridade da fila.
+
+- **avl.h**
+  - *ARV avl_criar*: criação da AVL e retorno do seu ponteiro;
+  - *void avl_apagar*: apaga todo o conteudo da lista e desaloca memória;
+  - *bool avl_inserir*: recebe uma AVL e um item para inseri-lo na árvore e retorna 1 caso consiga ou 0 caso contrário;
+  - *bool avl_remover*: recebe uma AVL e um item para removê-lo, retorna 1 caso consiga ou 0 caso contrário;
+  - *ITEM avl_buscar*: recebe uma AVL e uma chave para buscar um elemento na árvore, retornará caso exista ou retorna ERRO caso não exista;
+  - *void avl_imprimir*: recebe uma AVL para imprimi-lá ordenamente;
+  - *int avl_altura*: recebe uma AVL e retorna a altura da mesma;
+  - *bool avl_vazia*: recebe uma AVL e retorna 1 caso esteja vazia, 0 caso contrário ou ERRO caso não tenha sido alocada.
+
+
+
 Esta   parte   avalia   a   estratégia   de   implementação   utilizada.   Por   isso,   serão   considerados    aspectos    como    organização,    corretude, eficiência do    código    e    documentação interna.
 
 ## Parte 3 - Análise de Eficiência e Relatório
