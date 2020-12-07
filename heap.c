@@ -20,7 +20,9 @@ void fix_down(FILA_PRIOR *fp);
 void fix_up(FILA_PRIOR *fp);
 void swap (FILA_PRIOR *fp, int i, int j);
 
-
+/* criação da fila 
+   @param:  recebe um int indicando o tamanho da fila
+   @retorno:  retorna o endereço da fila */
 FILA_PRIOR *criar(int n) 
 { 
     FILA_PRIOR *fp = (FILA_PRIOR*)malloc(sizeof(FILA_PRIOR));
@@ -32,14 +34,16 @@ FILA_PRIOR *criar(int n)
      
     return fp;   
 }
-
+/* exclui a fila 
+   @param: recebe uma fila */ 
 void excluir (FILA_PRIOR * F)
 {
     free(F->vetor);
     free(F);
 }
 
-
+/* insere um elemento na fila
+   @param: recebe uma fila e um item para inserção */ 
 void fila_inserir (FILA_PRIOR * f, ITEM item)
 {
 
@@ -56,6 +60,9 @@ void fila_inserir (FILA_PRIOR * f, ITEM item)
 
 }
 
+/* busca um elemento na fila e incrementa a chave do elemento se o encontrar
+    @param: recebe uma fila e um item para busca
+    @retorno: retorna 1 caso exista ou 0 caso contrário */
 bool buscar(FILA_PRIOR * f, ITEM item)
 {
     printf("buscando por %s\n", item.nome);
@@ -73,25 +80,33 @@ bool buscar(FILA_PRIOR * f, ITEM item)
     }
     return FALSE;
 }
-
+/* imprime a fila
+   @param: recebe uma fila para imprimir */ 
 void imprimir (FILA_PRIOR * f)
 {
     for(int i = 0; i<f->fim; i++)
         printf("%d %s\n",f->vetor[i]->chave, f->vetor[i]->nome);
 }
 
-
-
+/* verifica se a fila está cheia
+   @param: recebe uma fila  
+   @retorno: retorna o endereço do ultimo elemento */ 
 int cheia(FILA_PRIOR *fp) 
 {
     return (fp->fim == fp->TAM_MAX - 1);   
 } 
 
+/* verifica se a fila está vazia
+   @param: recebe uma fila
+   @retorno: retorna o endereço do primeiro elemento pra verificar*/ 
 int vazia(FILA_PRIOR *fp) 
 {
     return (fp->fim == -1);   
 }
 
+/* inserção de um elemento na fila
+   @param: recebe uma fila e um item 
+   @retorno: retorna 1 caso não esteja cheia para inserção ou retorna 0 caso contrário */
 int inserir (FILA_PRIOR *fp, ITEM *item) 
 { 
     if (!cheia(fp)) 
@@ -103,7 +118,7 @@ int inserir (FILA_PRIOR *fp, ITEM *item)
     } 
     return 0;  
 }
-
+/* ordena os itens a partir do nó de inserção  */
 void fix_up(FILA_PRIOR *fp) 
 {
      // função interna 
@@ -116,7 +131,7 @@ void fix_up(FILA_PRIOR *fp)
         pai = (pai - 1) / 2;    
     }  
 }
-
+/* troca o apontador de dois elementos */
 void swap (FILA_PRIOR *fp, int i, int j) 
 {
     // função interna    
@@ -124,7 +139,9 @@ void swap (FILA_PRIOR *fp, int i, int j)
     fp->vetor[i] = fp->vetor[j];
     fp->vetor[j] = tmp;
 }
-
+/* remove um item da fila
+   @param: recebe uma fila 
+   @retorno: retorna o primeiro item se a lista não estiver vazia, caso contrário retorna falso */
 ITEM *remover (FILA_PRIOR *fp) 
 {
     if (fp!= NULL && !vazia(fp)) 
@@ -137,7 +154,7 @@ ITEM *remover (FILA_PRIOR *fp)
     }
     return NULL; 
 }
-
+/* ordena os itens a partir do nó de inserção  */
 void fix_down(FILA_PRIOR *fp)
 { // função interna
     int fesq, fdir, maior, pos = 0;

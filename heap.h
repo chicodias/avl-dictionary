@@ -21,20 +21,20 @@ struct item
 };  */
     
 // protótipos das funções
-void imprimir (FILA_PRIOR * f);
+void imprimir (FILA_PRIOR * f); // imprime a fila 
 
-void fila_inserir (FILA_PRIOR * f, ITEM item);
-
-
-bool buscar(FILA_PRIOR * f, ITEM item);
-void excluir (FILA_PRIOR * F);
+void fila_inserir (FILA_PRIOR * f, ITEM item); // insere um elemento na fila
 
 
-FILA_PRIOR *criar(int n);
-int cheia(FILA_PRIOR *fp);
-int vazia(FILA_PRIOR *fp);
-int inserir (FILA_PRIOR *fp, ITEM *item);
-ITEM *remover (FILA_PRIOR *fp);
-int avl_tamanho(ARV * T);
+bool buscar(FILA_PRIOR * f, ITEM item); // busca um elemento na fila
+void excluir (FILA_PRIOR * F); // exclui uma fila
+
+
+FILA_PRIOR *criar(int n); // cria a fila
+int cheia(FILA_PRIOR *fp); // verifica se a fila está cheia
+int vazia(FILA_PRIOR *fp); // verifica se a fila esta vazia
+int inserir (FILA_PRIOR *fp, ITEM *item); // insere um elemento na fila
+ITEM *remover (FILA_PRIOR *fp); // remove um elemento da fila
+int avl_tamanho(ARV * T); // verifica o tamanho da fila
 
 #endif /* heap.h */
