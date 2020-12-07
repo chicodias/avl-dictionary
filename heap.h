@@ -21,6 +21,13 @@ struct item
 };  */
     
 // protótipos das funções
+void imprimir (FILA_PRIOR * f);
+
+void fila_inserir (FILA_PRIOR * f, ITEM item);
+
+
+bool buscar(FILA_PRIOR * f, ITEM item);
+
 
 FILA_PRIOR *criar();
 int cheia(FILA_PRIOR *fp);

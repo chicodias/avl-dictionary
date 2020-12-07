@@ -1,5 +1,5 @@
-all: avl.o main.o
-	gcc -std=c99 -Wall avl.c main.c -o trab2
+all: avl.o heap.o main.o
+	gcc -std=c99 -Wall heap.c avl.c main.c -o trab2
 	
 clean:
 	rm *.o trab2
