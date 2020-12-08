@@ -30,6 +30,7 @@ FILA_PRIOR *criar(int n)
     {
         fp->fim = -1;     
         fp->vetor = (ITEM **)malloc(n*sizeof(ITEM *));
+        fp->TAM_MAX = n;
     }
      
     return fp;   
@@ -38,6 +39,9 @@ FILA_PRIOR *criar(int n)
    @param: recebe uma fila */ 
 void excluir (FILA_PRIOR * F)
 {
+    for (int i = 0; i < F->TAM_MAX-1; i++)
+        free(F->vetor[i]);
+    
     free(F->vetor);
     free(F);
 }
@@ -46,18 +50,14 @@ void excluir (FILA_PRIOR * F)
    @param: recebe uma fila e um item para inserção */ 
 void fila_inserir (FILA_PRIOR * f, ITEM item)
 {
-
     if(buscar(f,item)==FALSE)
     {
         ITEM * i = malloc (sizeof(ITEM));
         i->chave = 1;
         strcpy(i->nome, item.nome);
-        printf("inseriu\n");
         inserir(f,i);
-        return;
+        
     }
-    printf("nao inseriu\n");
-
 }
 
 /* busca um elemento na fila e incrementa a chave do elemento se o encontrar
@@ -65,27 +65,25 @@ void fila_inserir (FILA_PRIOR * f, ITEM item)
     @retorno: retorna 1 caso exista ou 0 caso contrário */
 bool buscar(FILA_PRIOR * f, ITEM item)
 {
-    printf("buscando por %s\n", item.nome);
     for(int i = 0; i< f->fim; i++)
-    {
-        printf("%d\n", i);
         if( strcmp(f->vetor[i]->nome, item.nome) == 0)
         {
-            printf("encontrou\n");
             f->vetor[i]->chave++;
             fix_up(f);
             return TRUE;
         }
    
-    }
     return FALSE;
 }
 /* imprime a fila
    @param: recebe uma fila para imprimir */ 
-void imprimir (FILA_PRIOR * f)
+void imprimir (FILA_PRIOR * f, int n)
 {
-    for(int i = 0; i<f->fim; i++)
-        printf("%d %s\n",f->vetor[i]->chave, f->vetor[i]->nome);
+    
+    int q = ((n-1 > f->TAM_MAX) ? f->TAM_MAX : n-1);
+
+    for(int i = 0; i< q; i++)
+        printf("%s %d\n", f->vetor[i]->nome, f->vetor[i]->chave);
 }
 
 /* verifica se a fila está cheia
@@ -112,7 +110,7 @@ int inserir (FILA_PRIOR *fp, ITEM *item)
     if (!cheia(fp)) 
     { 
         fp->fim++; 
-        fp->vetor[fp->fim] = item; 
+        fp->vetor[fp->fim] = item;
         fix_up(fp); 
         return 1;     
     } 

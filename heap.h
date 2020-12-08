@@ -21,7 +21,7 @@ struct item
 };  */
     
 // protótipos das funções
-void imprimir (FILA_PRIOR * f); // imprime a fila 
+void imprimir (FILA_PRIOR * f, int n);
 
 void fila_inserir (FILA_PRIOR * f, ITEM item); // insere um elemento na fila
 
