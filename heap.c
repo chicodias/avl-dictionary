@@ -19,6 +19,7 @@ struct fila_prior
 void fix_down(FILA_PRIOR *fp);
 void fix_up(FILA_PRIOR *fp);
 void swap (FILA_PRIOR *fp, int i, int j);
+void alfab(FILA_PRIOR *fp);
 
 /* criação da fila 
    @param:  recebe um int indicando o tamanho da fila
@@ -31,6 +32,13 @@ FILA_PRIOR *criar(int n)
         fp->fim = -1;     
         fp->vetor = (ITEM **)malloc(n*sizeof(ITEM *));
         fp->TAM_MAX = n;
+
+    // inicializa os apontadores
+    if (fp->vetor != NULL)
+        for (int i = 0; i < n; i++)
+            fp->vetor[i] = NULL;
+        
+        
     }
      
     return fp;   
@@ -39,7 +47,7 @@ FILA_PRIOR *criar(int n)
    @param: recebe uma fila */ 
 void excluir (FILA_PRIOR * F)
 {
-    for (int i = 0; i < F->TAM_MAX-1; i++)
+    for (int i = 0; i < F->TAM_MAX; i++)
         free(F->vetor[i]);
     
     free(F->vetor);
@@ -79,16 +87,17 @@ bool buscar(FILA_PRIOR * f, ITEM item)
    @param: recebe uma fila para imprimir */ 
 void imprimir (FILA_PRIOR * f, int n)
 {
-    
+ // se n > TAM_MAX, fique com o ultimo   
     int q = ((n-1 > f->TAM_MAX) ? f->TAM_MAX : n-1);
-
-    for(int i = 0; i< q; i++)
-        printf("%s %d\n", f->vetor[i]->nome, f->vetor[i]->chave);
+   alfab(f);
+    for(int i = 0; i<= q; i++)
+        if (f->vetor[i] != NULL)
+            printf("%s %d\n", f->vetor[i]->nome, f->vetor[i]->chave);
 }
 
 /* verifica se a fila está cheia
    @param: recebe uma fila  
-   @retorno: retorna o endereço do ultimo elemento */ 
+   @retorno: 1 se todas as posicoes estao ocupadas, 0 caso contrario */ 
 int cheia(FILA_PRIOR *fp) 
 {
     return (fp->fim == fp->TAM_MAX - 1);   
@@ -96,7 +105,7 @@ int cheia(FILA_PRIOR *fp)
 
 /* verifica se a fila está vazia
    @param: recebe uma fila
-   @retorno: retorna o endereço do primeiro elemento pra verificar*/ 
+   @retorno: 1 se esta vazia, 0 caso contrario */ 
 int vazia(FILA_PRIOR *fp) 
 {
     return (fp->fim == -1);   
@@ -116,7 +125,7 @@ int inserir (FILA_PRIOR *fp, ITEM *item)
     } 
     return 0;  
 }
-/* ordena os itens a partir do nó de inserção  */
+/* ordena os itens a partir do nó de inserção, subindo pela árvore um item de maior prioridade */
 void fix_up(FILA_PRIOR *fp) 
 {
      // função interna 
@@ -125,11 +134,12 @@ void fix_up(FILA_PRIOR *fp)
     // para heap máximo
     while (pos > 0 && fp->vetor[pos]->chave > fp->vetor[pai]->chave)                   
     {      
-        swap(fp, pos, pai); pos = pai;        
+        swap(fp, pos, pai);
+        pos = pai;        
         pai = (pai - 1) / 2;    
     }  
 }
-/* troca o apontador de dois elementos */
+/* troca duas variaveis substituindo seus apontadores */
 void swap (FILA_PRIOR *fp, int i, int j) 
 {
     // função interna    
@@ -152,7 +162,7 @@ ITEM *remover (FILA_PRIOR *fp)
     }
     return NULL; 
 }
-/* ordena os itens a partir do nó de inserção  */
+/* ordena os itens, descendo para os filhos os nós de menor prioridade */
 void fix_down(FILA_PRIOR *fp)
 { // função interna
     int fesq, fdir, maior, pos = 0;
@@ -172,3 +182,19 @@ void fix_down(FILA_PRIOR *fp)
     } 
 }
 
+/* função similar ao fix up que ordena elementos de mesma prioridade por ordem alfabetica */
+void alfab(FILA_PRIOR *fp)
+{ // função interna
+    int pos = fp->fim; 
+    int pai = (pos - 1) / 2; 
+    // para heap máximo
+    while (pos > 0)                   
+    {      
+        if (fp->vetor[pos]->chave == fp->vetor[pai]->chave)
+            if (strcmp (fp->vetor[pos]->nome, fp->vetor[pai]->nome) < 0)
+                swap(fp, pos, pai); 
+
+        pos = pai;        
+        pai = (pai - 1) / 2;    
+    }  
+}

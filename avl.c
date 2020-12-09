@@ -164,7 +164,6 @@ NO *avl_inserir_filho (int filho, NO *no, ITEM item)
         pnovo->esq = NULL; 
         pnovo->item = item; 
         pnovo->altura = 0;
-        //pnovo->item.freq = 0;
         
         if (filho == FILHO_ESQ)
             no->esq = pnovo; 
@@ -258,12 +257,8 @@ bool avl_remover_no (NO **raiz, ITEM chave)
             // copia o conteúdo desse nó, remove-o da árvore, em seguida substitui pelo nó a ser 
             // inicialmente removido
                 strcpy(tmp.nome, t->item.nome);
-               // tmp.freq = t->item.freq;
-                
                 avl_remover_no(raiz, t->item);
-                
                 strcpy((*raiz)->item.nome, tmp.nome);
-                //(*raiz)->item.freq = tmp.freq;
             }
             res= TRUE;
         }

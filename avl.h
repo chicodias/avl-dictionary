@@ -19,8 +19,8 @@
 typedef         /*Tipo ITEM da avl*/
 struct item_ 
 {
-    char nome[20];
-    int chave;
+    char nome[30];
+    int chave; 
 }
 ITEM;
 

@@ -16,11 +16,11 @@ int main()
         nops = numero de operaçoes requisitadas
         chave: chave a ser buscada 
         mov: palavra retornada pela busca  */
-    int opn, i = 0, n_dicionario, palavras_frequentes;
-    char nops[50];
+    int opn, i = 0, n_dicionario=1, palavras_frequentes;
+    char nops[30];
     ITEM mov;
     ARV * TR = NULL;
-    ARV * DICIONARIOS[3] = {NULL, NULL, NULL}, ** dic; //armazena o endereco do dicionario a ser utililado
+    ARV * DICIONARIOS[3] = {NULL, NULL, NULL}, ** dic = NULL; //armazena o endereco do dicionario a ser utililado
     bool criou;
     FILA_PRIOR * F;
 
@@ -33,11 +33,11 @@ int main()
         {
             case 1:
             // criar dicionario
-            // não criar uma lista sem antes apagar uma já existente, perdendo acesso a anterior
             criou = FALSE;
+            
 
                 // CRIA UM DICIONARIO DE ID i +1.
-                for (i = 0; i <= 3 && !criou; i++)
+                for (i = 0; i < 3 && !criou; i++)
                 {
                     if (DICIONARIOS[i] == NULL)
                     {
@@ -45,9 +45,6 @@ int main()
                         printf("DICIONARIO %d CRIADO\n", i+1);
                         criou = TRUE;
                         dic = &DICIONARIOS[i];
-                    }
-                    if(i == 3){
-                        printf("IMPOSSIVEL CRIAR\n");
                     }
                 }
                 if (criou)
@@ -62,6 +59,8 @@ int main()
                     }
                 
                 }
+                else
+                    printf("IMPOSSIVEL CRIAR\n");
                     
                 break;
 
@@ -97,7 +96,9 @@ int main()
                             else if (atoi(nops) == 0)
                             {
                                 if (avl_remover(dic, mov))
-                                   printf ("%s EXCLUIDA DE %d\n",mov.nome,n_dicionario);                        
+                                   printf ("%s EXCLUIDA DE %d\n",mov.nome,n_dicionario);
+                                else 
+                                    printf ("%s INEXISTENTE EM %d\n",mov.nome,n_dicionario);
                             }
                             
 
@@ -117,6 +118,7 @@ int main()
                 {
                     *dic = DICIONARIOS[n_dicionario-1];
                     avl_apagar(dic);
+                    *dic = NULL;
                     printf("DICIONARIO %d APAGADO\n", n_dicionario);
                 
                 }
@@ -159,18 +161,20 @@ int main()
 
                 }
 
-                avl_imprimir(TR);
-                imprimir(F, palavras_frequentes);
-
                 // organizar TR por ordem de frequencia
                 // imprimir os termos de acordo com ela até que 
                 // palavras_frequentes termos sejam impressos
+                avl_imprimir(TR);
+                imprimir(F, palavras_frequentes);
 
+                printf("no 4\n");
                 excluir(F);
                 avl_apagar(&TR);
+                F= NULL;
                 break;
             
             case 0:
+            printf("no final");
                 for (i = 0; i < 3; i++)
                     if (DICIONARIOS[i] != NULL)
                         avl_apagar (&DICIONARIOS[i]);
