@@ -5,6 +5,7 @@
  */
 
 #include "avl.h"
+#include "item.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -65,7 +66,8 @@ void avl_apagar (ARV **T) /*Apaga todo o conteudo da ARV e libera o bloco de mem
 void avl_apagar_nos (NO ** raiz) /* função interna ao TAD */
 {
     if (*raiz != NULL) 
-    {           
+    {    
+        liberaPalavra(&(*raiz)->item.nome);
         avl_apagar_nos(&(*raiz)->esq); 
         avl_apagar_nos(&(*raiz)->dir); 
         free(*raiz);      
@@ -251,14 +253,19 @@ bool avl_remover_no (NO **raiz, ITEM chave)
             // encontra a maior chave esquerda
                 NO * t = (*raiz)->esq;
                 ITEM tmp;
+                
                 while (t != NULL && t->dir != NULL)
                     t = t->dir; 
             
             // copia o conteúdo desse nó, remove-o da árvore, em seguida substitui pelo nó a ser 
             // inicialmente removido
-                strcpy(tmp.nome, t->item.nome);
+                tmp.nome = t->item.nome;
+                t->item.nome = NULL;    
+                //strcpy(tmp.nome, t->item.nome);
                 avl_remover_no(raiz, t->item);
-                strcpy((*raiz)->item.nome, tmp.nome);
+                (*raiz)->item.nome = tmp.nome;
+                tmp.nome = NULL;
+                //strcpy((*raiz)->item.nome, tmp.nome);
             }
             res= TRUE;
         }

@@ -6,9 +6,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include "item.h"
 #include "avl.h"
 #include "heap.h"
-#include <string.h>
+
 
 int main()
 {
@@ -17,10 +19,10 @@ int main()
         chave: chave a ser buscada 
         mov: palavra retornada pela busca  */
     int opn, i = 0, n_dicionario=1, palavras_frequentes;
-    char nops[30];
+    char nops[30], pal[50];
     ITEM mov;
     ARV * TR = NULL;
-    ARV * DICIONARIOS[3] = {NULL, NULL, NULL}, ** dic = NULL; //armazena o endereco do dicionario a ser utililado
+    ARV * DICIONARIOS[3] = {NULL, NULL, NULL}, ** dic = NULL; //armazena o endereco do dicionario a ser utilizado
     bool criou;
     FILA_PRIOR * F;
 
@@ -51,9 +53,11 @@ int main()
                 {
                     while(1)
                     {
-                        scanf (" %s",mov.nome);
+                        scanf (" %s",pal);
 
-                        if(strcmp(mov.nome,"#") == 0) break;                 
+                        if(strcmp(pal,"#") == 0) break;
+
+                        mov.nome = alocaPalavra(pal);
 
                         avl_inserir(dic, mov);
                     }
@@ -61,7 +65,8 @@ int main()
                 }
                 else
                     printf("IMPOSSIVEL CRIAR\n");
-                    
+
+                avl_imprimir(*dic);  
                 break;
 
             case 2:
@@ -74,7 +79,7 @@ int main()
                     break;
                 }
                 else if(DICIONARIOS[n_dicionario-1] != NULL)
-                    *dic = DICIONARIOS[n_dicionario-1];
+                    dic = &DICIONARIOS[n_dicionario-1];
 
                 while(1)
                     {                      
@@ -82,11 +87,13 @@ int main()
                         if(strcmp(nops,"#") == 0) break;
                         else
                         {                       
-                            scanf (" %s", mov.nome);
+                            scanf (" %s", pal);
+                            mov.nome = pal;
                             if(atoi(nops) == 1)
                             {
                                 if(avl_buscar(*dic,mov) == NULL)
                                 {
+                                    mov.nome = alocaPalavra(pal);
                                     if(avl_inserir(dic, mov))
                                         printf ("%s INSERIDA EM %d\n",mov.nome,n_dicionario);
                                 }
@@ -111,14 +118,15 @@ int main()
             case 3: 
             // apagar dicionario
 
-                scanf("%d", &n_dicionario); // lendo a operação e o numero do dicionaro que vai apagar               
+                scanf("%d", &n_dicionario); // lendo a operação e o numero do dicionaro que vai apagar          
+                   
                 if (n_dicionario > 3 || n_dicionario < 1 || DICIONARIOS[n_dicionario-1] == NULL)
                     printf("DICIONARIO %d INEXISTENTE\n",  n_dicionario);
                 else if(DICIONARIOS[n_dicionario-1] != NULL)
                 {
-                    *dic = DICIONARIOS[n_dicionario-1];
+                    dic = &DICIONARIOS[n_dicionario-1];
                     avl_apagar(dic);
-                    *dic = NULL;
+                    dic = NULL;
                     printf("DICIONARIO %d APAGADO\n", n_dicionario);
                 
                 }
@@ -134,7 +142,7 @@ int main()
                     break;
                 }
                 else if(DICIONARIOS[n_dicionario-1] != NULL)
-                    *dic = DICIONARIOS[n_dicionario-1];
+                    dic = &DICIONARIOS[n_dicionario-1];
                 
                 if( palavras_frequentes <= 0)
                 {
@@ -148,11 +156,11 @@ int main()
                 // le as palavras
                 while(1)
                 {
-                    scanf (" %s",mov.nome);
+                    scanf (" %s",pal);
 
-                    if(strcmp(mov.nome,"#") == 0) break;                 
+                    if(strcmp(pal,"#") == 0) break;                 
                     // insere as palavras e contabiliza a frequencia das repetidas
-                    
+                    mov.nome = alocaPalavra(pal);
                     // se nao encontrar no dicionario, insere como palavra unica
                     if( avl_buscar(*dic, mov) == NULL)
                         avl_inserir(&TR, mov);
@@ -160,21 +168,19 @@ int main()
                         fila_inserir(F,mov);
 
                 }
-
+                avl_imprimir(*dic);
                 // organizar TR por ordem de frequencia
                 // imprimir os termos de acordo com ela até que 
                 // palavras_frequentes termos sejam impressos
                 avl_imprimir(TR);
                 imprimir(F, palavras_frequentes);
 
-                printf("no 4\n");
-                excluir(F);
+                excluir(&F);
                 avl_apagar(&TR);
-                F= NULL;
+
                 break;
             
             case 0:
-            printf("no final");
                 for (i = 0; i < 3; i++)
                     if (DICIONARIOS[i] != NULL)
                         avl_apagar (&DICIONARIOS[i]);

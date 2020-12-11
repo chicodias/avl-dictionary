@@ -45,13 +45,20 @@ FILA_PRIOR *criar(int n)
 }
 /* exclui a fila 
    @param: recebe uma fila */ 
-void excluir (FILA_PRIOR * F)
+void excluir (FILA_PRIOR ** F)
 {
-    for (int i = 0; i < F->TAM_MAX; i++)
-        free(F->vetor[i]);
-    
-    free(F->vetor);
-    free(F);
+    for (int i = 0; i < (*F)->TAM_MAX; i++)
+    {
+        if ((*F)->vetor[i] != NULL)
+        {
+            liberaPalavra(&(*F)->vetor[i]->nome);
+            free((*F)->vetor[i]);
+        }
+    }
+    free((*F)->vetor);
+    (*F)->vetor = NULL;
+    free(*F);
+    *F = NULL;
 }
 
 /* insere um elemento na fila
@@ -62,7 +69,7 @@ void fila_inserir (FILA_PRIOR * f, ITEM item)
     {
         ITEM * i = malloc (sizeof(ITEM));
         i->chave = 1;
-        strcpy(i->nome, item.nome);
+        i->nome = item.nome;
         inserir(f,i);
         
     }

@@ -7,22 +7,10 @@
 #ifndef avl_H
 #define avl_H
 
-#define bool int /*Define tipo booleano*/
-#define TRUE 1
-#define FALSE 0
-#define ERRO -32000
+#include "item.h"
 
 #define FILHO_ESQ 0 
 #define FILHO_DIR 1
-
-
-typedef         /*Tipo ITEM da avl*/
-struct item_ 
-{
-    char nome[30];
-    int chave; 
-}
-ITEM;
 
 
 /* TAD arvore binaria de busca */
@@ -30,7 +18,7 @@ typedef struct arv_ ARV;
 
 /* Funções deste TAD */
 
-int avl_tamanho(ARV * T);
+int avl_tamanho(ARV * T); // verifica o tamanho da avl
 
 ARV * avl_criar (void); /*Criacao da avl e retorno do seu ponteiro*/
 
