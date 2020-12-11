@@ -6,13 +6,19 @@
 #ifndef item_H
 #define item_H
 
+/* bibliotecas padrão do C */
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+
 #define bool int /*Define tipo booleano*/
 #define TRUE 1
 #define FALSE 0
 #define ERRO -32000
 
 
-typedef         /*Tipo ITEM da avl*/
+typedef         /*Tipo ITEM da AVL e da FP*/
 struct item_ 
 {
     char *nome; // palavra armazenada

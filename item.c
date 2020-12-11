@@ -3,12 +3,10 @@
  * Author: Francisco Rosa Dias de Miranda e
  *          Hiago Vinicius Americo
  */
-
-#include "item.h"
-/* pra fazer a strnlen funcionar */
 #define _POSIX_C_SOURCE 200809L
 #include <string.h>
-#include <stdlib.h>
+
+#include "item.h"
 
 /* recebe uma string, e aloca na memória */
 char * alocaPalavra (char * pal)
