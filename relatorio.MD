@@ -50,11 +50,8 @@ Como um pré-requisito para a criação de nosso programa era a necessidade da u
 
 Toda **árvore AVL** é balanceada, ou seja, sua altura é $O(logn)$. A vantagem do balanceamento é possibilitar que a busca seja de complexidade $O(logn)$. Com isso, as operações de inserção e remoção devem possuir custo similar. No caso da **árvore AVL**, a inserção e remoção têm custo $O(logn)$.
 
+Como temos alguns dados mais importante do que outros, utilizamos também uma **Fila de Prioridade** para o armazenamento das palavras. Nessa fila, garantimos que uns objetos com mais importância são recuperados em primeiro lugar. Com isso, temos que os objetos com menos prioridade nunca é removido na fila. 
 
-- Quais  Estruturas  de  Dados  e  respectivas  abordagens  de  implementação foram escolhidas para modelar o problema? Justifique baseado na solução implementada.
-
-- Quais  vantagens  e  limitações  as  estruturas/implementações escolhidas apresentam?
-- Explique claramente e detalhadamente a lógica utilizada para resolver o problema. Como   as   estruturas   (e   respectivas   operações   básicas)   são   utilizadas para representar (e resolver) o problema?
 
 ## Implementação 
 
@@ -79,4 +76,3 @@ Apresentaremos as funções utilizadas na implementação do código e a documen
 
 
 
-Esta   parte   avalia   a   estratégia   de   implementação   utilizada.   Por   isso,   serão   considerados    aspectos    como    organização,    corretude, eficiência do    código    e    documentação interna.
