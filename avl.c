@@ -5,10 +5,6 @@
  */
 
 #include "avl.h"
-#include "item.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #define max(a, b) ((a > b) ? a : b)
 
@@ -87,7 +83,8 @@ bool avl_inserir (ARV **T, ITEM item)
         (*T)->raiz = (NO *) malloc (sizeof(NO)); 
         if ((*T)->raiz != NULL)
         {
-            (*T)->raiz->item = item; 
+            (*T)->raiz->item.nome = alocaPalavra(item.nome);
+            (*T)->raiz->item.chave = 0;   
             (*T)->raiz->esq = NULL; 
             (*T)->raiz->dir = NULL; 
             return (TRUE);        
@@ -164,7 +161,8 @@ NO *avl_inserir_filho (int filho, NO *no, ITEM item)
     { 
         pnovo->dir = NULL; 
         pnovo->esq = NULL; 
-        pnovo->item = item; 
+        pnovo->item.nome = alocaPalavra(item.nome);
+        pnovo->item.chave = 0; 
         pnovo->altura = 0;
         
         if (filho == FILHO_ESQ)
@@ -239,12 +237,14 @@ bool avl_remover_no (NO **raiz, ITEM chave)
             if ((*raiz)->esq == NULL) 
             {          
                 (*raiz) = (*raiz)->dir; 
+                liberaPalavra(&(aux->item.nome));
                 free(aux);          
                 aux = NULL;       
             }   
             else if ((*raiz)->dir == NULL) 
             {              
                 (*raiz) = (*raiz)->esq; 
+                liberaPalavra(&aux->item.nome);
                 free(aux);              
                 aux = NULL;           
             }

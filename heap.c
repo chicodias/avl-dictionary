@@ -3,10 +3,7 @@
  * Author: Francisco Rosa Dias de Miranda e
  *          Hiago Vinicius Americo
  */
-#include "stdlib.h"
 #include "heap.h"
-#include <string.h>
-#include <stdio.h>
 
 struct fila_prior 
 {
@@ -16,6 +13,7 @@ struct fila_prior
 };
 
 /* funcoes internas ao tad */
+int inserir (FILA_PRIOR *fp, ITEM *item);
 void fix_down(FILA_PRIOR *fp);
 void fix_up(FILA_PRIOR *fp);
 void swap (FILA_PRIOR *fp, int i, int j);
@@ -67,9 +65,9 @@ void fila_inserir (FILA_PRIOR * f, ITEM item)
 {
     if(buscar(f,item)==FALSE)
     {
-        ITEM * i = malloc (sizeof(ITEM));
+        ITEM * i = (ITEM *) malloc (sizeof(ITEM));
         i->chave = 1;
-        i->nome = item.nome;
+        i->nome = alocaPalavra(item.nome);
         inserir(f,i);
         
     }
@@ -84,6 +82,7 @@ bool buscar(FILA_PRIOR * f, ITEM item)
         if( strcmp(f->vetor[i]->nome, item.nome) == 0)
         {
             f->vetor[i]->chave++;
+            swap(f, i, f->fim);
             fix_up(f);
             return TRUE;
         }
@@ -94,12 +93,13 @@ bool buscar(FILA_PRIOR * f, ITEM item)
    @param: recebe uma fila para imprimir */ 
 void imprimir (FILA_PRIOR * f, int n)
 {
+
  // se n > TAM_MAX, fique com o ultimo   
-    int q = ((n-1 > f->TAM_MAX) ? f->TAM_MAX : n-1);
-   alfab(f);
-    for(int i = 0; i<= q; i++)
+    int q = f->fim;//((n-1 > f->TAM_MAX) ? f->TAM_MAX : n-1);
+    alfab(f);
+    for(int i = 0; i< q; i++)
         if (f->vetor[i] != NULL)
-            printf("%s %d\n", f->vetor[i]->nome, f->vetor[i]->chave);
+            printf("%s %d\n", f->vetor[i]->nome, f->vetor[i]->chave); 
 }
 
 /* verifica se a fila está cheia
@@ -128,6 +128,7 @@ int inserir (FILA_PRIOR *fp, ITEM *item)
         fp->fim++; 
         fp->vetor[fp->fim] = item;
         fix_up(fp); 
+        alfab(fp);
         return 1;     
     } 
     return 0;  

@@ -5,4 +5,4 @@ clean:
 	rm *.o trab2
 	
 run:
-	./trab2 <casos_teste/3.in
+	./trab2
