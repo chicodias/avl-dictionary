@@ -19,17 +19,19 @@ O programa criado tem como principal objetivo verificar trechos de texto a parti
 
 ## Modelagem
 
-Dentre as cinco opções apresentadas ao usuário, temos:
+Dentre as cinco opções apresentadas ao usuário sendo elas operações dominantes, temos:
 
 - **1**: Criar dicionário
   - Um dicionário é criado, se for possível,
-  - O usuário digita as palavras a serem adicionadas ao dicionário.
+  - O usuário digita as palavras a serem adicionadas ao dicionário,
+  - Feito a inicialização da árvore alocando dinâmicamente com número arbitrário de inserções.
 - **2**: Atualizar dicionário
   - O usuário informa o dicionário a ser alterado,
   - É informado (1) para uma inserção ou (0) para uma remoção
   - A palavra é atualizada no dicionário.
 - **3**: Apagar dicionário
   - É informado a ID de um dicionário, em seguida removido.
+  - Desaloca todos os nós da árvore 
 - **4**: Verificar texto
   - É informada a ID de um dicionário e um inteiro inteiro $n$ de palavras mais frequentes a ser retornado,
   - O trecho é informado,
@@ -43,14 +45,18 @@ Para escolher qual estrutura de dados será mais adequada para resolver o proble
 
 Na opção **1**, temos, além da inicialização de um dicionário que abrigará aos termos, a *inserção* de um número arbitrário destes pelo usuário, o que pode ocorrer em ordem alfabética, sendo que não podem haver palavras em duplicidade. Da mesma forma, a opção **2** também precisará fazer uma *busca* para a *inserção*, assim como também para uma eventual *remoção*. Na opção **3**, é feita a *exclusão* de um dos dicionários criados pelo usuário.
 
-Já na opção 4, fazemos a *inserção* do trecho a ser analizado, *buscamos* as palavras que estejam em nosso dicionário, contabilizamos a *frequência* dessas, *imprimimos* as palavras que não foram encontradas no dicionário
+Já na opção **4**, fazemos a *inserção* do trecho a ser analizado, *buscamos* as palavras que estejam em nosso dicionário, contabilizamos a *frequência* dessas, *imprimimos* as palavras que não foram encontradas no dicionário
 
 
 Como um pré-requisito para a criação de nosso programa era a necessidade da utilização de **estruturas de dados não lineares**, escolhemos modelar o problema através a adoção de **árvores AVL**. Uma **árvore AVL** (assim chamada devido ao nome de seus inventores, Adelson-Velsky and Landis) é uma árvore binária de busca auto-balaceada.
 
-Toda **árvore AVL** é balanceada, ou seja, sua altura é $O(logn)$. A vantagem do balanceamento é possibilitar que a busca seja de complexidade $O(logn)$. Com isso, as operações de inserção e remoção devem possuir custo similar. No caso da **árvore AVL**, a inserção e remoção têm custo $O(logn)$.
+Toda **árvore AVL** é balanceada, ou seja, sua altura é $O(logn)$. A vantagem do balanceamento é possibilitar que a busca seja de complexidade $O(logn)$. Com isso, as operações de inserção e remoção devem possuir custo similar. No caso da **árvore AVL**, a inserção e remoção têm custo $O(logn)$. A desvantagem é que caso um novo elemento seja inserido na árvore pode ocorrer do desbalanceamento dela, com isso teria que fazer as tais rotações, mas como as operações estão em $O(logn)$ isso não afetaria muito.
 
-Como temos alguns dados mais importante do que outros, utilizamos também uma **Fila de Prioridade** para o armazenamento das palavras. Nessa fila, garantimos que uns objetos com mais importância são recuperados em primeiro lugar. Com isso, temos que os objetos com menos prioridade nunca é removido na fila. 
+Como temos alguns dados mais importante do que outros, utilizamos também uma **Fila de Prioridade** para o armazenamento das palavras. Nessa fila, garantimos que uns objetos com mais importância são recuperados em primeiro lugar. Com isso, temos que os objetos com menos prioridade nunca é removido na fila. Nos auxiliando para ver quantas vezes uma palavra aparece no texto.
+
+Como o nosso problema possui muita inserção e remoção, uma simples **Árvore Binária de Busca** não iria conseguir solucionar, pois ela não garante que a árvore gerada a cada passo seja balanceada.
+
+
 
 
 ## Implementação 
@@ -74,5 +80,5 @@ Apresentaremos as funções utilizadas na implementação do código e a documen
   - *int avl_altura*: recebe uma AVL e retorna a altura da mesma;
   - *bool avl_vazia*: recebe uma AVL e retorna 1 caso esteja vazia, 0 caso contrário ou ERRO caso não tenha sido alocada.
 
-
+O programa pode ser compilado atráves da diretiva `make all` e rodada através do comando `make run`. Para limpar os arquivos gerados pela compilação, utilize o comando `make clean`, conforme os padrões vigentes da GNU Coding Standards.
 
