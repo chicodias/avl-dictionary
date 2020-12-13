@@ -78,34 +78,11 @@ bool buscar(FILA_PRIOR * f, ITEM item)
         if( strcmp(f->vetor[i]->nome, item.nome) == 0)
         {      
             f->vetor[i]->chave++;
+            swap(f, i, f->fim);
             fix_up(f);
             return TRUE;
         }
     return FALSE;
-}
-
-/* compara dois elementos */
-int compar(const void * A, const void * B)
-{
-    ITEM * a = *(ITEM **) A,
-         * b = *(ITEM **) B;
-         
-    if (a->chave != b->chave)
-        return b->chave - a->chave;
-    else
-        return strcmp(a->nome, b->nome);
-}
-
-/* imprime a fila
-   @param: recebe uma fila para imprimir */ 
-void imprimir (FILA_PRIOR * f, int n)
-{
- // se n > TAM_MAX, fique com o ultimo   
-    int q = ((n-1 > f->TAM_MAX) ? f->TAM_MAX : n-1);
-    qsort(f->vetor, f->fim +1, sizeof(ITEM *), compar); 
-
-    for(int i = 0; i<= q; i++)
-        printf("%s %d\n", f->vetor[i]->nome, f->vetor[i]->chave);
 }
 
 /* verifica se a fila está cheia
@@ -146,7 +123,7 @@ void fix_up(FILA_PRIOR *fp)
     int pos = fp->fim; 
     int pai = (pos - 1) / 2; 
     // para heap máximo
-    while (pos > 0 && fp->vetor[pos]->chave > fp->vetor[pai]->chave)                   
+    while (pos > 0 && compara(fp->vetor[pos], fp->vetor[pai]) < 0)//fp->vetor[pos]->chave > fp->vetor[pai]->chave)                   
     {      
         swap(fp, pos, pai);
         pos = pai;        
@@ -184,14 +161,27 @@ void fix_down(FILA_PRIOR *fp)
     { 
         fesq = 2 * pos + 1; 
         fdir = 2 * pos + 2; 
-        if (fdir <= fp->fim && fp->vetor[fesq]->chave < fp->vetor[fdir]->chave) 
+        if (fdir <= fp->fim && compara(fp->vetor[fesq], fp->vetor[fdir]) > 0) //fp->vetor[fesq]->chave < fp->vetor[fdir]->chave) 
             maior = fdir; 
         else 
             maior = fesq;   
-        if (fp->vetor[pos]->chave >= fp->vetor[maior]->chave) 
+        if ( compara(fp->vetor[pos], fp->vetor[maior]) <= 0) //fp->vetor[pos]->chave >= fp->vetor[maior]->chave) 
             break;                         
         // para heap máximo
         swap(fp, pos, maior);
         pos = maior;   
     } 
+}
+
+/* imprime a fila
+   @param: recebe uma fila para imprimir e n termos que serão impressos*/ 
+void imprimir (FILA_PRIOR * f, int n)
+{
+ // se n > TAM_MAX, fique com o ultimo   
+    int q = ((n > f->TAM_MAX) ? f->TAM_MAX : n);
+    qsort(f->vetor, f->fim +1, sizeof(ITEM *), compar); 
+    for(int i = 0; i< q; i++)
+        if (f->vetor[i] != NULL)
+            printf("%s %d\n", f->vetor[i]->nome, f->vetor[i]->chave);
+    
 }

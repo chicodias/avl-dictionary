@@ -25,3 +25,28 @@ void liberaPalavra(char ** pal)
     free(*pal);
     *pal = NULL;
 }
+
+/* Compara dois ITENS */
+/* compara dois elementos */
+int compar(const void * A, const void * B)
+{
+    ITEM * a = *(ITEM **) A,
+         * b = *(ITEM **) B;
+         
+    if (a->chave != b->chave)
+        return b->chave - a->chave;
+    else
+        return strcmp(a->nome, b->nome);
+}
+
+/* compara dois itens
+@retorno > 0 se b > a
+         <0 caso contrario */
+int compara(ITEM * a, ITEM * b)
+{
+         
+    if (a->chave != b->chave)
+        return b->chave - a->chave;
+    else
+        return strcmp(a->nome, b->nome);
+}

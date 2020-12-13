@@ -33,6 +33,9 @@ char * alocaPalavra (char * pal);
 /* libera uma palavra do heap */
 void liberaPalavra(char ** pal);
 
+/* compara dois itens em ordem de chave*/
+int compar(const void * A, const void * B);
+int compara(ITEM * a, ITEM * b);
 
 
 #endif

@@ -139,11 +139,6 @@ int main()
                 else if(DICIONARIOS[n_dicionario-1] != NULL)
                     dic = &DICIONARIOS[n_dicionario-1];
                 
-                if( palavras_frequentes <= 0)
-                {
-                    printf("IMPOSSIVEL INFORMAR %d PALAVRAS MAIS FREQUENTES", palavras_frequentes);
-                    break;
-                }
                 if (TR == NULL)
                     TR = avl_criar();
                 else break; 
@@ -168,6 +163,12 @@ int main()
                 // imprimir os termos de acordo com ela até que 
                 // palavras_frequentes termos sejam impressos
                 avl_imprimir(TR);
+                if( palavras_frequentes <= 0)
+                {
+                    printf("IMPOSSIVEL INFORMAR %d PALAVRAS MAIS FREQUENTES", palavras_frequentes);
+                    break;
+                }
+                else
                 imprimir(F, palavras_frequentes);
 
                 excluir(&F);

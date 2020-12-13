@@ -1,2 +1,3 @@
+pandoc relatorio.MD -V geometry:margin=1.5in -o relatorio.pdf
 make clean
-zip trabalho-2.zip *.h *.c Makefile /casos_teste/*
+zip trabalho-2.zip *.h *.c Makefile casos_teste/*.in relatorio.pdf
