@@ -13,72 +13,98 @@
 
 A classificação de conteúdo textual é um dos grandes desafios atuais da área conhecida como processamento de linguagem natural (PLN). Neste trabalho, entendemos como **classificação** a técnica de identificar um conjunto de significados ou conceitos de um texto.
 
-Uma das maneiras de criar algoritmos que sejam capazes de reconhecer o conteúdo de um texto, é filtrando as palavras mais pertinentes ao domínio do tema objetivo, e excluindo palavras "comuns" da linguagem, ou seja, que não agreguem significado semântico para a análise. Dessa forma, o assunto pode ser indicado pela alta presença de palavras relevantes que não façam parte de um dicionário pré-estabelecido.
+Uma das maneiras de criar algoritmos que sejam capazes de reconhecer o conteúdo de um texto é filtrando as palavras mais pertinentes ao domínio do tema objetivo, e excluindo palavras "comuns" da linguagem, ou seja, que não agreguem significado semântico para a análise. Dessa forma, o assunto pode ser indicado pela alta presença de palavras relevantes que não façam parte de um dicionário pré-estabelecido.
 
 O programa criado tem como principal objetivo verificar trechos de texto a partir de um dicionário e retornar as palavras não encontradas e as $n$ palavras do dicionário mais frequentes no trecho, com suas respectivas frequências.
 
-## Modelagem
-
-Dentre as cinco opções apresentadas ao usuário sendo elas operações dominantes, temos:
+Conforme a especificação do projeto, serão apresentadas cinco opções  ao usuário, sendo elas:
 
 - **1**: Criar dicionário
   - Um dicionário é criado, se for possível,
   - O usuário digita as palavras a serem adicionadas ao dicionário,
-  - Feito a inicialização da árvore alocando dinâmicamente com número arbitrário de inserções.
+  - **Operações**: Inicialização, seguida de número arbitrário de inserções no dicionário.
 - **2**: Atualizar dicionário
   - O usuário informa o dicionário a ser alterado,
   - É informado (1) para uma inserção ou (0) para uma remoção
   - A palavra é atualizada no dicionário.
+  - **Operações**: número arbitrário de inserções ou remoções em um dicionário.
 - **3**: Apagar dicionário
-  - É informado a ID de um dicionário, em seguida removido.
-  - Desaloca todos os nós da árvore 
+  - É informado a ID de um dicionário, que é em seguida removido.
+  - **Operações**: Exclusão de um dicionário.
 - **4**: Verificar texto
   - É informada a ID de um dicionário e um inteiro inteiro $n$ de palavras mais frequentes a ser retornado,
-  - O trecho é informado,
+  - O trecho a ser analisado é informado,
   - O programa retorna as palavras não contidas no dicionário e as $n$ mais frequentes, em ordem alfabética e de frequência.
+  - **Operações**: 
+    - busca dos termos em um dicionário existente,
+    - criação de um dicionário de apoio com os termos não encontrados,
+    - impressão de ambos na saída padrão.
 - **5**: Encerrar aplicação
   - Todas as estruturas são excluídas da memória e a aplicação é finalizada.
+  - **Operações**: Exclusão de todos os dicionários.
 
-O final da entrada é indicado pelo caractere '#'. Dessa forma, não é sabido pelo programador o tamanho da entrada em pré-execução. Assim, é mandatório a utilização de TAD's com alocacão dinâmica de memória.
+## Modelagem
 
-Para escolher qual estrutura de dados será mais adequada para resolver o problema, primeiramente pensemos nas primitivas que estarão envolvidas em tempo de execução.
+Vamos definir um **dicionário** como sendo um conjunto de termos únicos ordenados lexicograficamente. Para escolher qual estrutura de dados será mais adequada para resolver o problema, primeiro pensemos em algumas peculiaridades que estarão envolvidas em tempo de execução.
 
-Na opção **1**, temos, além da inicialização de um dicionário que abrigará aos termos, a *inserção* de um número arbitrário destes pelo usuário, o que pode ocorrer em ordem alfabética, sendo que não podem haver palavras em duplicidade. Da mesma forma, a opção **2** também precisará fazer uma *busca* para a *inserção*, assim como também para uma eventual *remoção*. Na opção **3**, é feita a *exclusão* de um dos dicionários criados pelo usuário.
+Temos que o final da entrada em cada opção é somente indicado pelo caractere '#'. Dessa forma, não é sabido pelo programador o tamanho prévio de um dicionário, sendo assim, é mandatória a utilização de TAD's com alocacão dinâmica de memória.
 
-Já na opção **4**, fazemos a *inserção* do trecho a ser analizado, *buscamos* as palavras que estejam em nosso dicionário, contabilizamos a *frequência* dessas, *imprimimos* as palavras que não foram encontradas no dicionário
+Por não haver a ocorrência de termos em duplicidade, é necessário que uma busca seja feita antes da inserção de um novo termo, que já deve ser inserido na posição correta. Como temos um conjunto ordenado em que gostaríamos que as operações - principalmente a de busca - sejam o mais eficiente possíveis, é natural que recorramos a uma **árvore binária de busca** (ABB).
 
+Porém, dentre as especificidades de dicionários, os termos podem acabar sendo inseridos já em ordem alfabética, o que arruinaria a eficiência da busca em uma ABB, que poderia tornar-se $O(n)$ neste caso (o pior). Dessa forma, prezando pela eficiência, é necessário que utilizemos algum processo de **balanceamento** que garanta um menor tempo computacional para nossas primitivas.
 
-Como um pré-requisito para a criação de nosso programa era a necessidade da utilização de **estruturas de dados não lineares**, escolhemos modelar o problema através a adoção de **árvores AVL**. Uma **árvore AVL** (assim chamada devido ao nome de seus inventores, Adelson-Velsky and Landis) é uma árvore binária de busca auto-balaceada.
+Uma **árvore AVL** (assim chamada devido ao nome de seus inventores, Adelson-Velsky and Landis) é uma árvore binária de busca auto-balaceada. A vantagem do balanceamento é possibilitar que a busca seja de complexidade $O(logn)$, porém uma desvantagem é que as operações de inserção e remoção deverão ter o mesmo custo.
 
-Toda **árvore AVL** é balanceada, ou seja, sua altura é $O(logn)$. A vantagem do balanceamento é possibilitar que a busca seja de complexidade $O(logn)$. Com isso, as operações de inserção e remoção devem possuir custo similar. No caso da **árvore AVL**, a inserção e remoção têm custo $O(logn)$. A desvantagem é que caso um novo elemento seja inserido na árvore pode ocorrer do desbalanceamento dela, com isso teria que fazer as tais rotações, mas como as operações estão em $O(logn)$ isso não afetaria muito.
+Além disso, inserções e exclusões podem acabar desbalanceando a árvore, que deve então ser rotacionada de forma a assegurar que o balanceamento seja restaurado. Contudo, tais desvantagens não inviabilizam a adoção de árvores AVL's como estrutura de dados neste problema.
 
-Como temos alguns dados mais importante do que outros, utilizamos também uma **Fila de Prioridade** para o armazenamento das palavras. Nessa fila, garantimos que uns objetos com mais importância são recuperados em primeiro lugar. Com isso, temos que os objetos com menos prioridade nunca é removido na fila. Nos auxiliando para ver quantas vezes uma palavra aparece no texto.
+Durante a execução, o usuário pode criar até três dicionários. Iremos então criar um vetor de apontadores que armazenará cada um deles para acesso oportuno das outras opções. Após a criação, os termos são lidos da entrada padrão e inseridos em sua respectiva árvore.
 
-Como o nosso problema possui muita inserção e remoção, uma simples **Árvore Binária de Busca** não iria conseguir solucionar, pois ela não garante que a árvore gerada a cada passo seja balanceada.
+Podemos também criar um dicionário auxiliar para armazenar os termos inéditos que encontremos ao comparar um texto com o dicionário. Além disso, é solicitado que sejam impressos na saída padrão os **termos mais frequentes**.
 
+No caso destes, temos um tipo diferente de ordenação: aqui são impressos primeiro os termos que tenham maior ocorrência, sendo que a ordem alfabética é secundária, apenas utilizada entre termos com igual ocorrência. Essa característica nos fez optar pelo uso de outro TAD para armazenar as palavras mais frequentes, a **Fila de Prioridade**.
 
+Como os termos mais frequentes serão recuperados de acordo com sua frequência de ocorrência, e não mais somente em ordem lexicográfica como em nosso dicionário, a adoção desse tipo de estrutura nos favorece na medida em que deixa a inserção e exclusão de novos termos realizada em tempo constante, pois ela é sempre realizada, respectivamente, no início ou final do vetor.
+
+Neste projeto, armazenamos nossa fila em um heap, em que seu tamanho é dinamicamente alocado, e tem como tamanho máximo o número de termos no dicionário. Uma das vantagens de utilizar um heap binário é que, como ele é uma árvore de busca completa, as operações primitivas também são realizadas em tempo logarítmico.
+
+Como desvantagem, assim como nas AVL's precisamos garantir que as propriedades do heap sejam mantidas após cada operação - o que neste caso envolve trocar elementos de posição para que a prioridade de um nó seja menor que a de seu ancestral, no caso do *heap máximo*.
+
+Assim, o programa, ao receber um texto para verificação, lê uma palavra por vez e procura-a no dicionário escolhido pelo usuário. Caso a encontre, sua frequência é contabiliada dentro da fila de prioridade; caso a palavra não esteja no dicionário, ela é armazenada em um dicionário auxiliar criado com os termos inéditas.
+
+Após todas as palavras serem lidas, o programa então imprime na saída padrão todas as palavras únicas, assim como os $n$ termos mais frequentes, que poderá ter no máximo a mesma quantidade de elementos que o dicionário escolhido, a depender do valor de $n$ dado pelo usuário.
 
 
 ## Implementação 
 
-Apresentaremos as funções utilizadas na implementação do código e a documentação das mesmas. Como utilizamos duas estruturas de dados (Árvore AVL e Fila de Prioridades Decrescente), teremos então dois arquivos TAD's sendo eles:
+Utilizamos o tipo `ITEM`, que armazena o endereço da string contendo uma *palavra*, e um inteiro que contém a frequência daquele termo. Optamos por gastar um pouco mais de espaço armazenado a frequência mesmo quando ela não é utilizada, no caso dos dicionários, pois em contrapartida a string que armazenará o termo será alocada dinamicamente, e totalmente inicializada e operacionalizada dentro deste módulo.
+
+Tal estratégia proveu um ganho na legibilidade do código, pois utilizou-se aos mesmos tipo no chamado das duas funções - favorecendo também o encapsulamento e a ocultação de informação.  Apresentaremos a implementação dos TAD's Árvore AVL e Fila de Prioridade, através dos métodos:
 
 - **heap.h**
-  - *FILA_PRIOR criar*: criação da fila;
-  - *int cheia*: recebe uma fila, verifica se ela está cheia e retorna 1 caso esteja ou 0 caso contrário;
-  - *int vazia*: recebe uma fila, verifica se ela está vazia e retorna 1 caso esteja ou 0 caso contrário;
-  - *int inserir*: recebe uma fila e um item para inserir;
-  - *ITEM remover*: remove e retorna o item com maior (menor) prioridade da fila.
+  - `criar`: criação da fila;
+  - `cheia`: recebe uma fila, verifica se ela está cheia e retorna 1 caso esteja ou 0 caso contrário;
+  - `vazia`: recebe uma fila, verifica se ela está vazia e retorna 1 caso esteja ou 0 caso contrário;
+  - `inserir`: recebe uma fila e um item para inserir;
+  - `remover`: remove e retorna o item com maior prioridade da fila.
 
 - **avl.h**
-  - *ARV avl_criar*: criação da AVL e retorno do seu ponteiro;
-  - *void avl_apagar*: apaga todo o conteudo da lista e desaloca memória;
-  - *bool avl_inserir*: recebe uma AVL e um item para inseri-lo na árvore e retorna 1 caso consiga ou 0 caso contrário;
-  - *bool avl_remover*: recebe uma AVL e um item para removê-lo, retorna 1 caso consiga ou 0 caso contrário;
-  - *ITEM avl_buscar*: recebe uma AVL e uma chave para buscar um elemento na árvore, retornará caso exista ou retorna ERRO caso não exista;
-  - *void avl_imprimir*: recebe uma AVL para imprimi-lá ordenamente;
-  - *int avl_altura*: recebe uma AVL e retorna a altura da mesma;
-  - *bool avl_vazia*: recebe uma AVL e retorna 1 caso esteja vazia, 0 caso contrário ou ERRO caso não tenha sido alocada.
+  - `avl_criar`: criação da AVL e retorno do seu ponteiro;
+  - `avl_apagar`: apaga todo o conteudo da lista e desaloca memória;
+  - `avl_inserir`: recebe uma AVL e um item para inseri-lo na árvore e retorna 1 caso consiga ou 0 caso contrário;
+  - `avl_remover`: recebe uma AVL e um item para removê-lo, retorna 1 caso consiga ou 0 caso contrário;
+  - `avl_buscar`: recebe uma AVL e uma chave para buscar um elemento na árvore, retornará caso exista ou retorna ERRO caso não exista;
+  - `avl_imprimir`: recebe uma AVL para imprimi-lá ordenamente;
+  - `avl_altura`: recebe uma AVL e retorna a altura da mesma;
+  - `avl_vazia`: recebe uma AVL e retorna 1 caso esteja vazia, 0 caso contrário ou ERRO caso não tenha sido alocada.
 
-O programa pode ser compilado atráves da diretiva `make all` e rodada através do comando `make run`. Para limpar os arquivos gerados pela compilação, utilize o comando `make clean`, conforme os padrões vigentes da GNU Coding Standards.
+O programa pode ser compilado atráves da diretiva `make all` e executado através do comando `make run`. Para limpar os arquivos gerados pela compilação, utilize o comando `make clean`, conforme os padrões vigentes da GNU Coding Standards.
 
+## Conclusão
+
+Este relatório procurou explicar as escolhas e estratégias de implementação por nós utilizadas para a criação de um programa de verificação e contagem de palavras. Utilizamos Árvores AVL para armazenar aos dicionários e Filas de Prioridades para a ocorrência de cada termo. Através destes, pudemos modelar satisfatoriamente e utilizar algoritmos que trabalham em tempo computacional consideravelmente menor do que seria obtido por estruturas de dados lineares.
+
+## Referências
+
+ - AVL tree, https://en.wikipedia.org/w/index.php?title=AVL_tree&oldid=991991252 (acesso em Dec. 08, 2020). 
+ - Priority queue, https://en.wikipedia.org/w/index.php?title=Priority_queue&oldid=992018991 (acesso em Dec. 08, 2020). 
+  

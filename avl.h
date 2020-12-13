@@ -18,6 +18,7 @@ typedef struct arv_ ARV;
 
 /* Funções deste TAD */
 
+
 int avl_tamanho(ARV * T); // verifica o tamanho da avl
 
 ARV * avl_criar (void); /*Criacao da avl e retorno do seu ponteiro*/

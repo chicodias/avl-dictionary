@@ -19,7 +19,7 @@ char * alocaPalavra (char * pal)
     strcpy(str, pal);
     return str;
 }
-
+/* libera uma palavra alocada do heap e seta seu ponteiro para NULL */
 void liberaPalavra(char ** pal)
 {
     free(*pal);

@@ -11,10 +11,10 @@
 
 int main()
 {
-    /* opn = opção selecionada pelo usuario
+    /*  opn = opção selecionada pelo usuario
         nops = numero de operaçoes requisitadas
-        chave: chave a ser buscada 
-        mov: palavra retornada pela busca  */
+        pal: chave a ser buscada 
+        mov: ITEM para auxiliar no chamado as funçoes  */
     int opn, i = 0, n_dicionario=1, palavras_frequentes;
     char nops[30], pal[50];
     ITEM mov;
@@ -163,7 +163,7 @@ int main()
                         fila_inserir(F,mov);
 
                 }
-                //avl_imprimir(*dic);
+                
                 // organizar TR por ordem de frequencia
                 // imprimir os termos de acordo com ela até que 
                 // palavras_frequentes termos sejam impressos
@@ -175,7 +175,7 @@ int main()
 
                 break;
             
-            case 0:
+            case 0: // encerra a aplicacão
                 for (i = 0; i < 3; i++)
                     if (DICIONARIOS[i] != NULL)
                         avl_apagar (&DICIONARIOS[i]);

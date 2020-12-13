@@ -17,9 +17,8 @@ int inserir (FILA_PRIOR *fp, ITEM *item);
 void fix_down(FILA_PRIOR *fp);
 void fix_up(FILA_PRIOR *fp);
 void swap (FILA_PRIOR *fp, int i, int j);
-void alfab(FILA_PRIOR *fp);
 
-/* criação da fila 
+/* criação da fila  
    @param:  recebe um int indicando o tamanho da fila
    @retorno:  retorna o endereço da fila */
 FILA_PRIOR *criar(int n) 
@@ -35,8 +34,6 @@ FILA_PRIOR *criar(int n)
     if (fp->vetor != NULL)
         for (int i = 0; i < n; i++)
             fp->vetor[i] = NULL;
-        
-        
     }
      
     return fp;   
@@ -69,7 +66,6 @@ void fila_inserir (FILA_PRIOR * f, ITEM item)
         i->chave = 1;
         i->nome = alocaPalavra(item.nome);
         inserir(f,i);
-        
     }
 }
 
@@ -78,28 +74,38 @@ void fila_inserir (FILA_PRIOR * f, ITEM item)
     @retorno: retorna 1 caso exista ou 0 caso contrário */
 bool buscar(FILA_PRIOR * f, ITEM item)
 {
-    for(int i = 0; i< f->fim; i++)
+    for(int i = 0; i <= f->fim; i++)
         if( strcmp(f->vetor[i]->nome, item.nome) == 0)
-        {
+        {      
             f->vetor[i]->chave++;
-            swap(f, i, f->fim);
             fix_up(f);
             return TRUE;
         }
-   
     return FALSE;
 }
+
+/* compara dois elementos */
+int compar(const void * A, const void * B)
+{
+    ITEM * a = *(ITEM **) A,
+         * b = *(ITEM **) B;
+         
+    if (a->chave != b->chave)
+        return b->chave - a->chave;
+    else
+        return strcmp(a->nome, b->nome);
+}
+
 /* imprime a fila
    @param: recebe uma fila para imprimir */ 
 void imprimir (FILA_PRIOR * f, int n)
 {
-
  // se n > TAM_MAX, fique com o ultimo   
-    int q = f->fim;//((n-1 > f->TAM_MAX) ? f->TAM_MAX : n-1);
-    alfab(f);
-    for(int i = 0; i< q; i++)
-        if (f->vetor[i] != NULL)
-            printf("%s %d\n", f->vetor[i]->nome, f->vetor[i]->chave); 
+    int q = ((n-1 > f->TAM_MAX) ? f->TAM_MAX : n-1);
+    qsort(f->vetor, f->fim +1, sizeof(ITEM *), compar); 
+
+    for(int i = 0; i<= q; i++)
+        printf("%s %d\n", f->vetor[i]->nome, f->vetor[i]->chave);
 }
 
 /* verifica se a fila está cheia
@@ -127,8 +133,8 @@ int inserir (FILA_PRIOR *fp, ITEM *item)
     { 
         fp->fim++; 
         fp->vetor[fp->fim] = item;
+        fp->vetor[fp->fim]->chave = 1;
         fix_up(fp); 
-        alfab(fp);
         return 1;     
     } 
     return 0;  
@@ -188,21 +194,4 @@ void fix_down(FILA_PRIOR *fp)
         swap(fp, pos, maior);
         pos = maior;   
     } 
-}
-
-/* função similar ao fix up que ordena elementos de mesma prioridade por ordem alfabetica */
-void alfab(FILA_PRIOR *fp)
-{ // função interna
-    int pos = fp->fim; 
-    int pai = (pos - 1) / 2; 
-    // para heap máximo
-    while (pos > 0)                   
-    {      
-        if (fp->vetor[pos]->chave == fp->vetor[pai]->chave)
-            if (strcmp (fp->vetor[pos]->nome, fp->vetor[pai]->nome) < 0)
-                swap(fp, pos, pai); 
-
-        pos = pai;        
-        pai = (pai - 1) / 2;    
-    }  
 }
